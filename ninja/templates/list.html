@@ -1,47 +1,43 @@
 {#
-# Copyright 2015 Google Inc.
+# Copyright 2019
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# Workshop Ninja Python
 #}
 
 {% extends "base.html" %}
 
 {% block content %}
+<style>
+    h1, h2, h3, h4, h5, h6 {
+      color: white
+    }
+</style>
 
-<h3>Books</h3>
-<a href="/books/add" class="btn btn-success btn-sm">
+<h3>Ninjas</h3>
+<a href="/ninjas/add" class="btn btn-success">
   <i class="glyphicon glyphicon-plus"></i>
-  Add book
+  Ninja
 </a>
 
-{% for book in books %}
+{% for ninja in ninjas %}
 <div class="media">
-  <a href="/books/{{book.id}}">
+  <a href="/ninjas/{{ninja.id}}">
     <div class="media-left">
-      {% if book.imageUrl %}
-        <img src="{{book.imageUrl}}">
+      {% if ninja.imageUrl %}
+        <img src="{{ninja.imageUrl}}">
       {% else %}
-        <img src="http://placekitten.com/g/128/192">
+        <img src="https://www.theninjaproject.bbva/assets/vectors/timeline/timeline-icon-dojo-kata-public.svg">
       {% endif %}
     </div>
     <div class="media-body">
-      <h4>{{book.title}}</h4>
-      <p>{{book.author}}</p>
+      <h4>{{ninja.name}}</h4>
+      <h5>{{ninja.department|default('Unknown', True)}}</h5>
+      <h5>{{ninja.building|default('Unknown', True)}}</h5>
     </div>
   </a>
 </div>
 {% else %}
-<p>No books found</p>
+<h6>No Ninjas found</h6>
 {% endfor %}
 
 {% if next_page_token %}

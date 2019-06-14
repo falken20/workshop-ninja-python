@@ -1,16 +1,6 @@
-# Copyright 2015 Google Inc.
+# Copyright 2019
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# Workshop Ninja Python
 
 import logging
 
@@ -27,20 +17,19 @@ def create_app(config, debug=False, testing=False, config_overrides=None):
     if config_overrides:
         app.config.update(config_overrides)
 
-    # Configure logging
     if not app.testing:
         logging.basicConfig(level=logging.INFO)
 
-    # Setup the data model.
+    # Configuramos el modelo de datos
     with app.app_context():
         model = get_model()
         model.init_app(app)
 
-    # Register the Bookshelf CRUD blueprint.
+    # Regsitramos el Ninja CRUD
     from .crud import crud
-    app.register_blueprint(crud, url_prefix='/books')
+    app.register_blueprint(crud, url_prefix='/ninjas')
 
-    # Add a default root route.
+    # Añadimos ruta por defecto
     @app.route("/")
     def index():
         return redirect(url_for('crud.list'))
@@ -59,19 +48,6 @@ def create_app(config, debug=False, testing=False, config_overrides=None):
 
 
 def get_model():
-    model_backend = current_app.config['DATA_BACKEND']
-    if model_backend == 'cloudsql':
-        from . import model_cloudsql
-        model = model_cloudsql
-    elif model_backend == 'datastore':
-        from . import model_datastore
-        model = model_datastore
-    elif model_backend == 'mongodb':
-        from . import model_mongodb
-        model = model_mongodb
-    else:
-        raise ValueError(
-            "No appropriate databackend configured. "
-            "Please specify datastore, cloudsql, or mongodb")
-
+    from . import model_datastore
+    model = model_datastore
     return model

@@ -1,16 +1,6 @@
-# Copyright 2015 Google Inc.
+# Copyright 2019
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# Workshop Ninja Python
 
 from ninja import get_model, storage
 from flask import Blueprint, current_app, redirect, render_template, request, \
@@ -48,18 +38,18 @@ def list():
     if token:
         token = token.encode('utf-8')
 
-    books, next_page_token = get_model().list(cursor=token)
+    ninjas, next_page_token = get_model().list(cursor=token)
 
     return render_template(
         "list.html",
-        books=books,
+        ninjas=ninjas,
         next_page_token=next_page_token)
 
 
 @crud.route('/<id>')
 def view(id):
-    book = get_model().read(id)
-    return render_template("view.html", book=book)
+    ninja = get_model().read(id)
+    return render_template("view.html", ninja=ninja)
 
 
 @crud.route('/add', methods=['GET', 'POST'])
@@ -77,16 +67,16 @@ def add():
             data['imageUrl'] = image_url
         # [END image_url2]
 
-        book = get_model().create(data)
+        ninja = get_model().create(data)
 
-        return redirect(url_for('.view', id=book['id']))
+        return redirect(url_for('.view', id=ninja['id']))
 
-    return render_template("form.html", action="Add", book={})
+    return render_template("form.html", action="Add", ninja={})
 
 
 @crud.route('/<id>/edit', methods=['GET', 'POST'])
 def edit(id):
-    book = get_model().read(id)
+    ninja = get_model().read(id)
 
     if request.method == 'POST':
         data = request.form.to_dict(flat=True)
@@ -96,11 +86,11 @@ def edit(id):
         if image_url:
             data['imageUrl'] = image_url
 
-        book = get_model().update(data, id)
+        ninja = get_model().update(data, id)
 
-        return redirect(url_for('.view', id=book['id']))
+        return redirect(url_for('.view', id=ninja['id']))
 
-    return render_template("form.html", action="Edit", book=book)
+    return render_template("form.html", action="Edit", ninja=ninja)
 
 
 @crud.route('/<id>/delete')

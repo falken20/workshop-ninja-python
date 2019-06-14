@@ -4,6 +4,7 @@
 
 runtime: python
 env: flex
+# Gunicorn "Green Unicorn" es un Python Web Server.
 entrypoint: gunicorn -b :$PORT main:app
 
 runtime_config:
