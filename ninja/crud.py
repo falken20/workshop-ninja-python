@@ -10,7 +10,6 @@ from flask import Blueprint, current_app, redirect, render_template, request, \
 crud = Blueprint('crud', __name__)
 
 
-# [START upload_image_file]
 def upload_image_file(file):
     """
     Upload the user-uploaded file to Google Cloud Storage and retrieve its
@@ -25,13 +24,12 @@ def upload_image_file(file):
         file.content_type
     )
 
-    current_app.logger.info(
-        "Uploaded file %s as %s.", file.filename, public_url)
+    current_app.logger.info("Fichero subido %s como %s.", file.filename, public_url)
 
     return public_url
-# [END upload_image_file]
 
 
+# Vista que lista todos los ninjas y los muestra usando list.html
 @crud.route("/")
 def list():
     token = request.args.get('page_token', None)
@@ -40,32 +38,26 @@ def list():
 
     ninjas, next_page_token = get_model().list(cursor=token)
 
-    return render_template(
-        "list.html",
-        ninjas=ninjas,
-        next_page_token=next_page_token)
+    return render_template("list.html", ninjas=ninjas, next_page_token=next_page_token)
 
 
+# Vista que lista un determinado ninja en view.html
 @crud.route('/<id>')
 def view(id):
     ninja = get_model().read(id)
     return render_template("view.html", ninja=ninja)
 
 
+# Vista que muestra el formulario form.html para añadir un nuevo ninja
+# Cuando el usuario pulsa salvar la misma vista gestiona la acción HTTP POST del formulario
 @crud.route('/add', methods=['GET', 'POST'])
 def add():
     if request.method == 'POST':
         data = request.form.to_dict(flat=True)
-
-        # If an image was uploaded, update the data to point to the new image.
-        # [START image_url]
         image_url = upload_image_file(request.files.get('image'))
-        # [END image_url]
 
-        # [START image_url2]
         if image_url:
             data['imageUrl'] = image_url
-        # [END image_url2]
 
         ninja = get_model().create(data)
 
@@ -74,6 +66,7 @@ def add():
     return render_template("form.html", action="Add", ninja={})
 
 
+# Vista que muestra el formulario form.html para modificar un ninja
 @crud.route('/<id>/edit', methods=['GET', 'POST'])
 def edit(id):
     ninja = get_model().read(id)
@@ -93,6 +86,7 @@ def edit(id):
     return render_template("form.html", action="Edit", ninja=ninja)
 
 
+# Elimina un determinado ninja
 @crud.route('/<id>/delete')
 def delete(id):
     get_model().delete(id)
