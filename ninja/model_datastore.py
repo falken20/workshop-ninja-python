@@ -4,6 +4,9 @@
 
 from flask import current_app
 from google.cloud import datastore
+# Import the Namespace Manager API
+from google.appengine.api import namespace_manager
+
 
 
 builtin_list = list
@@ -13,9 +16,12 @@ def init_app(app):
     pass
 
 
-# Crea un cliente para interactuar con la API de Cloud Datastore 
+# Crea un cliente para interactuar con la API de Cloud Datastore
 def get_client():
     return datastore.Client(current_app.config['PROJECT_ID'])
+
+    # Establecemos un namespace para almacenar nuestras entidades
+    namespace_manager.set_namespace(current_app.config['NAMESPACE_ID'])
 
 # Convierte la clave de entidad del almacen de datos en un id que la aplicación pueda utilizar
 def from_datastore(entity):
