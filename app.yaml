@@ -2,7 +2,7 @@
 #
 # Workshop Ninja Python
 
-runtime: python37
+runtime: python27
 #env: flex
 
 # Gunicorn "Green Unicorn" es un Python Web Server.

@@ -5,7 +5,7 @@
 from flask import current_app
 from google.cloud import datastore
 # Import the Namespace Manager API
-from google.appengine.api import namespace_manager
+# from google.appengine.api import namespace_manager
 
 
 
@@ -23,7 +23,7 @@ def get_client():
     # Establecemos un namespace para almacenar nuestras entidades
     namespace_manager.set_namespace(current_app.config['NAMESPACE_ID'])
 
-# Convierte la clave de entidad del almacen de datos en un id que la aplicación pueda utilizar
+# Convierte la clave de entidad del almacen de datos en un id que la app  pueda utilizar
 def from_datastore(entity):
     """
     Datastore typically returns:
@@ -47,7 +47,7 @@ def list(limit=10, cursor=None):
     query = ds.query(kind='Ninja', order=['name'])
     # Usamos query.fetch para proporcionar a un iterador las peticiones de consulta
     query_iterator = query.fetch(limit=limit, start_cursor=cursor)
-    # Obtenemos los resultados de página en página y devolvemos un cursor para permitir al usuario cargar la página siguiente de resultados
+    # Obtenemos los resultados de page en page y devolvemos un cursor para permitir al usuario cargar la page siguiente de resultados
     page = next(query_iterator.pages)
 
     entities = builtin_list(map(from_datastore, page))

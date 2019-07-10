@@ -29,7 +29,7 @@ def create_app(config, debug=False, testing=False, config_overrides=None):
     from .crud import crud
     app.register_blueprint(crud, url_prefix='/ninjas')
 
-    # Añadimos ruta por defecto
+    # Adding ruta por defecto
     @app.route("/")
     def index():
         return redirect(url_for('crud.list'))
