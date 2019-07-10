@@ -48,8 +48,8 @@ def view(id):
     return render_template("view.html", ninja=ninja)
 
 
-# Vista que muestra el formulario form.html para añadir un nuevo ninja
-# Cuando el usuario pulsa salvar la misma vista gestiona la acción HTTP POST del formulario
+# Vista que muestra el formulario form.html para anadir un nuevo ninja
+# Cuando el usuario pulsa salvar la misma vista gestiona la accion HTTP POST del formulario
 @crud.route('/add', methods=['GET', 'POST'])
 def add():
     if request.method == 'POST':

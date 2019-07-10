@@ -3,9 +3,14 @@
 # Workshop Ninja Python
 
 runtime: python27
-#env: flex
+api_version: 1
+threadsafe: true
+#service: 
 
-# Gunicorn "Green Unicorn" es un Python Web Server.
-#entrypoint: gunicorn -b :$PORT main:app
+handlers:
+- url: /.*
+  script: main.app
 
-
+libraries:
+  - name: flask
+    version: 'latest'
