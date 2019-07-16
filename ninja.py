@@ -38,8 +38,8 @@ class Location(ndb.Model):
 
 
 class Ninja(ndb.Model):
-    name = ndb.StringProperty(required=True, indexed=True)
-    email = ndb.StringProperty(required=False, indexed=False)
+    email = ndb.StringProperty(required=True, indexed=True)
+    name = ndb.StringProperty(required=True, indexed=False)
     imageUrl = ndb.StringProperty(indexed=False)
     date = ndb.DateTimeProperty(auto_now_add=True)
     location = ndb.StructuredProperty(Location)
@@ -70,7 +70,7 @@ class MainPage(webapp2.RequestHandler):
         self.response.write(template.render(templateValues))
 
 
-class Ninjas(webapp2.RequestHandler):
+class saveNinja(webapp2.RequestHandler):
 
     def post(self):
         ninja = Ninja()
@@ -103,8 +103,18 @@ class AddNinja(webapp2.RequestHandler):
 class UpdateNinja(webapp2.RequestHandler):
 
     def get(self):
+        ninja_ID = self.request.get('ninja_ID')
+
+        print('LOG -------> ', ninja_ID)
+
+        query = Ninja.query(Ninja.key == ndb.Key(Ninja, 'aghkZXZ-Tm9uZXISCxIFTmluamEYgICAgIDArwoM'))
+        ninja = Ninja.get_by_id('5838406743490560')
+        #query = Ninja.query(Ninja.ID == ninja_ID)
+        #ninja = query.fetch(1)
+
+        print('LOG -------> ', ninja)
+
         action = 'Update'
-        ninja = Ninja()
         templateValues = {
             'action': action,
             'ninja': ninja
@@ -117,7 +127,7 @@ class UpdateNinja(webapp2.RequestHandler):
 # [START app]
 app = webapp2.WSGIApplication([
     ('/', MainPage),
-    ('/add', Ninjas),
+    ('/save', saveNinja),
     ('/form-add', AddNinja),
     ('/form-update', UpdateNinja)
     ], debug=True)

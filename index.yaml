@@ -4,3 +4,6 @@ indexes:
   properties:
   - name: date
     direction: desc
+  - name: email
+    direction: asc
+
