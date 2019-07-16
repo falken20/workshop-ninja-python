@@ -1,0 +1,6 @@
+indexes:
+- kind: Ninja
+  ancestor: no
+  properties:
+  - name: date
+    direction: desc

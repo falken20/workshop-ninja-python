@@ -19,7 +19,7 @@
 
 <!-- El formulario HTML se crea mediante el uso del motor de plantillas predeterminado de Flask -->
 
-<form method="POST" enctype="multipart/form-data">
+<form action="/add" method="post">
 
   <div class="form-group">
     <label for="name">Name</label>
@@ -27,13 +27,18 @@
   </div>
 
   <div class="form-group">
+    <label for="name">Email</label>
+    <input type="text" name="email" id="email" value="{{ninja.email}}" class="form-control"/>
+  </div>
+
+  <div class="form-group">
     <label for="department">Department</label>
-    <input type="text" name="department" id="department" value="{{ninja.department}}" class="form-control"/>
+    <input type="text" name="department" id="department" value="{{ninja.location.department}}" class="form-control"/>
   </div>
 
   <div class="form-group">
     <label for="building">Building</label>
-    <input type="text" name="building" id="building" value="{{ninja.building}}" class="form-control"/>
+    <input type="text" name="building" id="building" value="{{ninja.location.building}}" class="form-control"/>
   </div>
 
   <div class="form-group">

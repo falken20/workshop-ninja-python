@@ -1,16 +1,24 @@
-# Copyright 2019
-#
-# Workshop Ninja Python
-
 runtime: python27
 api_version: 1
 threadsafe: true
-#service: 
 
+# [START handlers]
 handlers:
-- url: /.*
-  script: main.app
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon\.ico
 
+- url: /bootstrap
+  static_dir: bootstrap
+
+- url: /.*
+  script: ninja.app
+# [END handlers]
+
+# [START libraries]
 libraries:
-  - name: flask
-    version: 'latest'
+- name: webapp2
+  version: latest
+- name: jinja2
+  version: latest
+# [END libraries]
