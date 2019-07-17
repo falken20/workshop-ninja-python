@@ -104,15 +104,8 @@ class UpdateNinja(webapp2.RequestHandler):
 
     def get(self):
         ninja_ID = self.request.get('ninja_ID')
-
-        print('LOG -------> ', ninja_ID)
-
-        query = Ninja.query(Ninja.key == ndb.Key(Ninja, 'aghkZXZ-Tm9uZXISCxIFTmluamEYgICAgIDArwoM'))
-        ninja = Ninja.get_by_id('5838406743490560')
-        #query = Ninja.query(Ninja.ID == ninja_ID)
-        #ninja = query.fetch(1)
-
-        print('LOG -------> ', ninja)
+        #ninja = Ninja.query(Ninja.key == ndb.Key(Ninja, ninja_ID).id()).fetch(1)[0]
+        ninja = Ninja.get_by_id(int(ndb.Key(Ninja, ninja_ID).id()))
 
         action = 'Update'
         templateValues = {
