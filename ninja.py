@@ -70,7 +70,7 @@ class MainPage(webapp2.RequestHandler):
         self.response.write(template.render(templateValues))
 
 
-class saveNinja(webapp2.RequestHandler):
+class SaveNinja(webapp2.RequestHandler):
 
     def post(self):
         ninja = Ninja()
@@ -87,6 +87,9 @@ class saveNinja(webapp2.RequestHandler):
 
         query_params = {'email': ninja.name}
         self.redirect('/?' + urllib.urlencode(query_params))
+
+    def put(self):
+        print(self.request.get('id'))
 
 
 class AddNinja(webapp2.RequestHandler):
@@ -117,11 +120,46 @@ class UpdateNinja(webapp2.RequestHandler):
         self.response.write(template.render(templateValues))
 
 
+class ShowNinja(webapp2.RequestHandler):
+
+    def get(self):
+        ninja_ID = self.request.get('ninja_ID')
+        #ninja = Ninja.query(Ninja.key == ndb.Key(Ninja, ninja_ID).id()).fetch(1)[0]
+        ninja = Ninja.get_by_id(int(ndb.Key(Ninja, ninja_ID).id()))
+
+        action = 'Show'
+        templateValues = {
+            'action': action,
+            'ninja': ninja
+        }
+
+        template = JINJA_ENVIRONMENT.get_template('form-ninja.html')
+        self.response.write(template.render(templateValues))
+
+
+class DeleteNinja(webapp2.RequestHandler):
+
+    def get(self):
+        ninja_ID = self.request.get('ninja_ID')
+        #ninja = Ninja.query(Ninja.key == ndb.Key(Ninja, ninja_ID).id()).fetch(1)[0]
+        ninja = Ninja.get_by_id(int(ndb.Key(Ninja, ninja_ID).id()))
+
+        action = 'Show'
+        templateValues = {
+            'action': action,
+            'ninja': ninja
+        }
+
+        template = JINJA_ENVIRONMENT.get_template('index.html')
+        self.response.write(template.render(templateValues))
+
 # [START app]
 app = webapp2.WSGIApplication([
     ('/', MainPage),
-    ('/save', saveNinja),
-    ('/form-add', AddNinja),
-    ('/form-update', UpdateNinja)
+    ('/save', SaveNinja),
+    ('/addNinja', AddNinja),
+    ('/updateNinja', UpdateNinja),
+    ('/showNinja', ShowNinja),
+    ('/deleteNinja', DeleteNinja)
     ], debug=True)
 # [END app]
