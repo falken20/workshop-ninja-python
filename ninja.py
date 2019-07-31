@@ -4,12 +4,10 @@
 #
 # Workshop Ninja Python
 
-# [START imports]
 import os
-import urllib
 
-from google.appengine.api import users
 from google.appengine.ext import ndb
+#import storage
 
 import jinja2
 import webapp2
@@ -18,18 +16,12 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
-# [END imports]
 
-# We set a parent key on the 'Greetings' to ensure that they are all
-# in the same entity group. Queries across the single entity group
-# will be consistent. However, the write rate should be limited to
-# ~1/second.
+# Variables para acceso Storage
+CLOUD_STORAGE_BUCKET = 'workshop-ninja-python'
+MAX_CONTENT_LENGTH = 8 * 1024 * 1024
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
-def ninja_key(email):
-    """
-    Constructs a Datastore key for a Ninja entity.We use email as the key.
-    """
-    return ndb.Key('Ninja', email)
 
 # [START ndb classes] 
 class Location(ndb.Model):
@@ -49,21 +41,10 @@ class Ninja(ndb.Model):
 class MainPage(webapp2.RequestHandler):
 
     def get(self):
-        query = Ninja.query().order(-Ninja.date)
-        ninjas = query.fetch(10)
-
-        user = users.get_current_user()
-        if user:
-            url = users.create_logout_url(self.request.uri)
-            url_linktext = 'Logout'
-        else:
-            url = users.create_login_url(self.request.uri)
-            url_linktext = 'Login'
+        ninjas = Ninja.query().order(-Ninja.date).fetch(10)
 
         templateValues = {
-            'ninjas': ninjas,
-            'url': url,
-            'url_linktext': url_linktext,
+            'ninjas': ninjas
         }
 
         template = JINJA_ENVIRONMENT.get_template('index.html')
@@ -73,7 +54,12 @@ class MainPage(webapp2.RequestHandler):
 class SaveNinja(webapp2.RequestHandler):
 
     def post(self):
-        ninja = Ninja()
+        ninja_ID = self.request.get('id')
+        if ninja_ID == '':
+            print('No tiene ID')
+            ninja = Ninja()
+        else:
+            ninja = Ninja.get_by_id(int(ndb.Key(Ninja, ninja_ID).id()))
         ninja.name = self.request.get('name')
         ninja.email = self.request.get('email')
         ninja.imageUrl = self.request.get('imageUrl')      
@@ -85,11 +71,15 @@ class SaveNinja(webapp2.RequestHandler):
 
         ninja.put()
 
-        query_params = {'email': ninja.name}
-        self.redirect('/?' + urllib.urlencode(query_params))
+        # Recargamos home con ninjas actualizados
+        ninjas = Ninja.query().order(-Ninja.date).fetch(10)
 
-    def put(self):
-        print(self.request.get('id'))
+        templateValues = {
+            'ninjas': ninjas
+        }
+
+        template = JINJA_ENVIRONMENT.get_template('index.html')
+        self.response.write(template.render(templateValues))
 
 
 class AddNinja(webapp2.RequestHandler):
@@ -141,13 +131,15 @@ class DeleteNinja(webapp2.RequestHandler):
 
     def get(self):
         ninja_ID = self.request.get('ninja_ID')
-        #ninja = Ninja.query(Ninja.key == ndb.Key(Ninja, ninja_ID).id()).fetch(1)[0]
         ninja = Ninja.get_by_id(int(ndb.Key(Ninja, ninja_ID).id()))
+        ninja.key.delete()
 
-        action = 'Show'
+
+        # Recargamos home con ninjas actualizados
+        ninjas = Ninja.query().order(-Ninja.date).fetch(10)
+
         templateValues = {
-            'action': action,
-            'ninja': ninja
+            'ninjas': ninjas
         }
 
         template = JINJA_ENVIRONMENT.get_template('index.html')
@@ -156,7 +148,7 @@ class DeleteNinja(webapp2.RequestHandler):
 # [START app]
 app = webapp2.WSGIApplication([
     ('/', MainPage),
-    ('/save', SaveNinja),
+    ('/saveNinja', SaveNinja),
     ('/addNinja', AddNinja),
     ('/updateNinja', UpdateNinja),
     ('/showNinja', ShowNinja),
