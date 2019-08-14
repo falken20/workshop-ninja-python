@@ -7,7 +7,7 @@
 import os
 
 from google.appengine.ext import ndb
-#import storage
+import ninja_storage
 
 import jinja2
 import webapp2
