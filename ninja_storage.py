@@ -47,7 +47,6 @@ def upload_file(file, filename):
 
     gcs_file = gcs.open(path_storage, 'w', options={'x-goog-meta-foo': 'foo', 'x-goog-meta-bar': 'bar'})
     gcs_file.write('abcde\n')
-    gcs_file.write('f'*1024*4 + '\n')
     gcs_file.close
 # [END write]
 

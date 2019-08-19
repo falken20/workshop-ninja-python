@@ -73,7 +73,8 @@ class SaveNinja(webapp2.RequestHandler):
         logging.info('WNP: Ninja %s almacenado correctamente' % ninja.email)
 
         logging.info('WNP: Obtenemos imagen a almacenar en Google Storage')
-        image_url = ninja_storage.upload_file(self.request.get('image'), self.request.get('image'))
+        filename = self.request.get('image')
+        image_url = ninja_storage.upload_file(filename, filename)
 
         # Recargamos home con ninjas actualizados
         ninjas = Ninja.query().order(-Ninja.date).fetch(10)
