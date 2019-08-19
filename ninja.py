@@ -55,7 +55,7 @@ class SaveNinja(webapp2.RequestHandler):
         ninja_ID = self.request.get('id')
 
         if ninja_ID == '':
-            logging.info('Ninja %s no tiene ID' % self.request.get('email'))
+            logging.info('WNP: Ninja %s no tiene ID' % self.request.get('email'))
             ninja = Ninja()
         else:
             ninja = Ninja.get_by_id(int(ndb.Key(Ninja, ninja_ID).id()))
@@ -70,8 +70,10 @@ class SaveNinja(webapp2.RequestHandler):
         ninja.location = location
 
         ninja.put()
+        logging.info('WNP: Ninja %s almacenado correctamente' % ninja.email)
 
-        logging.info('Ninja %s almacenado correctamente' % ninja.email)
+        logging.info('WNP: Obtenemos imagen a almacenar en Google Storage')
+        image_url = ninja_storage.upload_file(self.request.get('image'), self.request.get('image'))
 
         # Recargamos home con ninjas actualizados
         ninjas = Ninja.query().order(-Ninja.date).fetch(10)
