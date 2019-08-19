@@ -1,12 +1,15 @@
 #!/usr/bin/env python
+# coding=utf-8
 
 # Copyright 2019
 #
 # Workshop Ninja Python
 
+
 import os
 
 from google.appengine.ext import ndb
+import logging
 import ninja_storage
 
 import jinja2
@@ -16,11 +19,6 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
-
-# Variables para acceso Storage
-CLOUD_STORAGE_BUCKET = 'workshop-ninja-python'
-MAX_CONTENT_LENGTH = 8 * 1024 * 1024
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 
 # [START ndb classes] 
@@ -55,21 +53,25 @@ class SaveNinja(webapp2.RequestHandler):
 
     def post(self):
         ninja_ID = self.request.get('id')
+
         if ninja_ID == '':
-            print('No tiene ID')
+            logging.info('Ninja %s no tiene ID' % self.request.get('email'))
             ninja = Ninja()
         else:
             ninja = Ninja.get_by_id(int(ndb.Key(Ninja, ninja_ID).id()))
+
         ninja.name = self.request.get('name')
         ninja.email = self.request.get('email')
-        ninja.imageUrl = self.request.get('imageUrl')      
-
+        ninja.imageUrl = self.request.get('imageUrl')  
+    
         location = Location()
         location.building = self.request.get('building')
         location.department = self.request.get('department')
         ninja.location = location
 
         ninja.put()
+
+        logging.info('Ninja %s almacenado correctamente' % ninja.email)
 
         # Recargamos home con ninjas actualizados
         ninjas = Ninja.query().order(-Ninja.date).fetch(10)
