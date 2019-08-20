@@ -33,7 +33,7 @@ gcs.set_default_retry_params(
 def get_bucket():
     bucket_name = CLOUD_STORAGE_BUCKET
 
-    logging.info('WNP: Obtenemos el nombre del bucket --> %s' % bucket_name)
+    logging.info('WNP: Obtenemos el nombre del bucket --> %s', bucket_name)
     return bucket_name
 # [END get_default_bucket]
 
@@ -42,12 +42,19 @@ def get_bucket():
 def upload_file(file, filename):
     """Upload a file."""
 
-    path_storage = "/" + get_bucket() + "/" + filename
-    logging.info('WNP: Creating file %s in storage' % format(path_storage))
+    pathFileGCS = "/" + get_bucket() + "/" + filename
+    logging.info('WNP: Creando fichero %s en GCS', format(pathFileGCS))
 
-    gcs_file = gcs.open(path_storage, 'w', options={'x-goog-meta-foo': 'foo', 'x-goog-meta-bar': 'bar'})
-    gcs_file.write('abcde\n')
-    gcs_file.close
+    fileType = file.type
+    fileContent = file.file.read()
+
+    fileGCS = gcs.open(pathFileGCS, 'w', content_type=fileType)
+    fileGCS.write(fileContent)
+    fileGCS.close
+    logging.info('WNP: Fichero %s creado en GCS', format(pathFileGCS))
+    
+    imageUrlGCS = 'https://%(bucket)s.storage.googleapis.com/%(file)s' % {'bucket':get_bucket(), 'file':filename}
+    return imageUrlGCS
 # [END write]
 
 # [START read]

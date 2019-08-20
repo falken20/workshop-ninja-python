@@ -18,10 +18,10 @@ __pycache__/
 # Ignored by the build system
 /setup.cfg
 
-##### ROD
+##### WNP
 # Ignore the evironment folder
 env/
 # Ignore the tests folder
 tests/
-# Ignore the lib folder
-lib/
+# Ignore PyCharm folder
+.idea/

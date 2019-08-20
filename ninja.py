@@ -20,7 +20,6 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
-
 # [START ndb classes] 
 class Location(ndb.Model):
     building = ndb.StringProperty(required=True, indexed=True)
@@ -55,26 +54,28 @@ class SaveNinja(webapp2.RequestHandler):
         ninja_ID = self.request.get('id')
 
         if ninja_ID == '':
-            logging.info('WNP: Ninja %s no tiene ID' % self.request.get('email'))
+            logging.info('WNP: Ninja %s no tiene ID', self.request.get('email'))
             ninja = Ninja()
         else:
             ninja = Ninja.get_by_id(int(ndb.Key(Ninja, ninja_ID).id()))
 
         ninja.name = self.request.get('name')
         ninja.email = self.request.get('email')
-        ninja.imageUrl = self.request.get('imageUrl')  
     
         location = Location()
         location.building = self.request.get('building')
         location.department = self.request.get('department')
         ninja.location = location
 
-        ninja.put()
-        logging.info('WNP: Ninja %s almacenado correctamente' % ninja.email)
+        fileUpload = self.request.POST.get('image')
+        logging.info('WNP: Imagen a almacenar en Google Cloud Storage -> %s', fileUpload.filename)
 
-        logging.info('WNP: Obtenemos imagen a almacenar en Google Storage')
-        filename = self.request.get('image')
-        image_url = ninja_storage.upload_file(filename, filename)
+        imageUrlGCS = ninja_storage.upload_file(fileUpload, fileUpload.filename)
+        logging.info('WNP: url imagen a almacenar en Google Cloud Storage %s', imageUrlGCS)
+
+        ninja.imageUrl = imageUrlGCS  
+        ninja.put()
+        logging.info('WNP: Ninja %s almacenado correctamente', ninja.email)
 
         # Recargamos home con ninjas actualizados
         ninjas = Ninja.query().order(-Ninja.date).fetch(10)
