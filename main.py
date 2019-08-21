@@ -7,38 +7,25 @@
 
 
 import os
-
-from google.appengine.ext import ndb
-import logging
-import ninja_storage
-
 import jinja2
 import webapp2
+import logging
+from google.appengine.ext import ndb
 
+from src import model
+from src import storage
+
+# Establecemos la carpeta que va a contener los templates que se van a usar
 JINJA_ENVIRONMENT = jinja2.Environment(
-    loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
+    loader=jinja2.FileSystemLoader(os.path.dirname(__file__) + '/templates'),
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
-
-# [START ndb classes] 
-class Location(ndb.Model):
-    building = ndb.StringProperty(required=True, indexed=True)
-    department = ndb.StringProperty(indexed=False)
-
-
-class Ninja(ndb.Model):
-    email = ndb.StringProperty(required=True, indexed=True)
-    name = ndb.StringProperty(required=True, indexed=False)
-    imageUrl = ndb.StringProperty(indexed=False)
-    date = ndb.DateTimeProperty(auto_now_add=True)
-    location = ndb.StructuredProperty(Location)
-# [END ndb classes]
 
 
 class MainPage(webapp2.RequestHandler):
 
     def get(self):
-        ninjas = Ninja.query().order(-Ninja.date).fetch(10)
+        ninjas = model.Ninja.query().order(-model.Ninja.date).fetch(10)
 
         templateValues = {
             'ninjas': ninjas
@@ -55,30 +42,34 @@ class SaveNinja(webapp2.RequestHandler):
 
         if ninja_ID == '':
             logging.info('WNP: Ninja %s no tiene ID', self.request.get('email'))
-            ninja = Ninja()
+            ninja = model.Ninja()
         else:
-            ninja = Ninja.get_by_id(int(ndb.Key(Ninja, ninja_ID).id()))
+            ninja = model.Ninja.get_by_id(int(ndb.Key(model.Ninja, ninja_ID).id()))
 
         ninja.name = self.request.get('name')
         ninja.email = self.request.get('email')
     
-        location = Location()
+        location = model.Location()
         location.building = self.request.get('building')
         location.department = self.request.get('department')
         ninja.location = location
 
         fileUpload = self.request.POST.get('image')
-        logging.info('WNP: Imagen a almacenar en Google Cloud Storage -> %s', fileUpload.filename)
 
-        imageUrlGCS = ninja_storage.upload_file(fileUpload, fileUpload.filename)
-        logging.info('WNP: url imagen a almacenar en Google Cloud Storage %s', imageUrlGCS)
+        # Comprobamos si ha seleccionado algún archivo
+        if hasattr(fileUpload, 'filename'):
+            logging.info('WNP: Imagen a almacenar en Google Cloud Storage -> %s', fileUpload.filename)
+            imageUrlGCS = storage.upload_file(fileUpload, fileUpload.filename)
+            logging.info('WNP: url imagen a almacenar en Google Cloud Storage %s', imageUrlGCS)
+            ninja.imageUrl = imageUrlGCS  
+        else:
+            logging.info('WNP: Ninja sin imagen de perfil seleccionada, se queda como estaba')
 
-        ninja.imageUrl = imageUrlGCS  
         ninja.put()
         logging.info('WNP: Ninja %s almacenado correctamente', ninja.email)
 
         # Recargamos home con ninjas actualizados
-        ninjas = Ninja.query().order(-Ninja.date).fetch(10)
+        ninjas = model.Ninja.query().order(-model.Ninja.date).fetch(10)
 
         templateValues = {
             'ninjas': ninjas
@@ -103,8 +94,8 @@ class UpdateNinja(webapp2.RequestHandler):
 
     def get(self):
         ninja_ID = self.request.get('ninja_ID')
-        #ninja = Ninja.query(Ninja.key == ndb.Key(Ninja, ninja_ID).id()).fetch(1)[0]
-        ninja = Ninja.get_by_id(int(ndb.Key(Ninja, ninja_ID).id()))
+        #ninja = model.Ninja.query(model.Ninja.key == ndb.Key(model.Ninja, ninja_ID).id()).fetch(1)[0]
+        ninja = model.Ninja.get_by_id(int(ndb.Key(model.Ninja, ninja_ID).id()))
 
         action = 'Update'
         templateValues = {
@@ -120,8 +111,8 @@ class ShowNinja(webapp2.RequestHandler):
 
     def get(self):
         ninja_ID = self.request.get('ninja_ID')
-        #ninja = Ninja.query(Ninja.key == ndb.Key(Ninja, ninja_ID).id()).fetch(1)[0]
-        ninja = Ninja.get_by_id(int(ndb.Key(Ninja, ninja_ID).id()))
+        #ninja = model.Ninja.query(model.Ninja.key == ndb.Key(model.Ninja, ninja_ID).id()).fetch(1)[0]
+        ninja = model.Ninja.get_by_id(int(ndb.Key(model.Ninja, ninja_ID).id()))
 
         action = 'Show'
         templateValues = {
@@ -137,12 +128,12 @@ class DeleteNinja(webapp2.RequestHandler):
 
     def get(self):
         ninja_ID = self.request.get('ninja_ID')
-        ninja = Ninja.get_by_id(int(ndb.Key(Ninja, ninja_ID).id()))
+        ninja = model.Ninja.get_by_id(int(ndb.Key(model.Ninja, ninja_ID).id()))
         ninja.key.delete()
 
 
         # Recargamos home con ninjas actualizados
-        ninjas = Ninja.query().order(-Ninja.date).fetch(10)
+        ninjas = model.Ninja.query().order(-model.Ninja.date).fetch(10)
 
         templateValues = {
             'ninjas': ninjas

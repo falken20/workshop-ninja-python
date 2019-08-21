@@ -17,9 +17,9 @@
 
 <h3>{{action}} Ninja</h3>
 
-<!-- El formulario HTML se crea mediante el uso del motor de plantillas predeterminado de Flask -->
+<!-- El formulario necesita incluir enctype="multipart/form-data" para procesar ficheros -->
 
-<form action="/saveNinja" method="post">
+<form action="/saveNinja" method="post" enctype="multipart/form-data">
 
   <div class="form-group">
     <label for="name">Name</label>
