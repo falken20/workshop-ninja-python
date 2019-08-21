@@ -25,5 +25,3 @@ env/
 tests/
 # Ignore PyCharm folder
 .idea/
-# Ignore lib folder
-lib/
