@@ -13,7 +13,7 @@ from google.appengine.api import app_identity
 
 
 # Variables para acceso a Cloud Storage
-CLOUD_STORAGE_BUCKET = 'workshop-ninja-python'
+CLOUD_STORAGE_BUCKET = 'workshop-ninja-python.appspot.com'
 MAX_CONTENT_LENGTH = 8 * 1024 * 1024
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
@@ -39,49 +39,55 @@ def get_bucket():
 
 
 # [START write]
-def upload_file(file, filename):
+def upload_file(fileUpload, fileName):
     """Upload a file."""
 
-    pathFileGCS = "/" + get_bucket() + "/" + filename
-    logging.info('WNP: Creando fichero %s en GCS', format(pathFileGCS))
+    pathFileGCS = "/" + get_bucket() + "/" + fileName
 
-    fileType = file.type
-    fileContent = file.file.read()
+    fileType = fileUpload.type
+    fileContent = fileUpload.file.read()
 
-    fileGCS = gcs.open(pathFileGCS, 'w', content_type=fileType)
-    fileGCS.write(fileContent)
+    logging.info('WNP: Creando fichero %s de tipo %s en GCS', format(pathFileGCS), fileType)
+
+    fileGCS = gcs.open(pathFileGCS, 'w', content_type=fileType, retry_params=gcs.RetryParams(backoff_factor=1.1))
+    #fileGCS.write(fileContent)
+    fileGCS.write('abcd\n')
     fileGCS.close
+
+    listBucket = gcs.listbucket("/" + get_bucket())
+    logging.info('>'.join([i.filename for i in listBucket]))
+    
     logging.info('WNP: Fichero %s creado en GCS', format(pathFileGCS))
     
-    imageUrlGCS = 'https://%(bucket)s.storage.googleapis.com/%(file)s' % {'bucket':get_bucket(), 'file':filename}
+    imageUrlGCS = 'https://%(bucket)s.storage.googleapis.com/%(file)s' % {'bucket':get_bucket(), 'file':fileName}
     return imageUrlGCS
 # [END write]
 
 # [START read]
-def read_file(self, filename):
+def read_file(self, fileName):
     self.response.write(
         'Abbreviated file content (first line and last 1K):\n')
 
-    with cloudstorage.open(filename) as cloudstorage_file:
+    with gcs.open(fileName) as cloudstorage_file:
         self.response.write(cloudstorage_file.readline())
-        cloudstorage_file.seek(-1024, os.SEEK_END)
+        gcs.seek(-1024, os.SEEK_END)
         self.response.write(cloudstorage_file.read())
 # [END read]
 
-def stat_file(self, filename):
+def stat_file(self, fileName):
     self.response.write('File stat:\n')
 
-    stat = gcs.stat(filename)
+    stat = gcs.stat(fileName)
     self.response.write(repr(stat))
 
 
 # [START delete_files]
 def delete_files(self):
     self.response.write('Deleting files...\n')
-    for filename in self.tmp_filenames_to_clean_up:
-        self.response.write('Deleting file {}\n'.format(filename))
+    for fileName in self.tmp_filenames_to_clean_up:
+        self.response.write('Deleting file {}\n'.format(fileName))
         try:
-            gcs.delete(filename)
+            gcs.delete(fileName)
         except gcs.NotFoundError:
             pass
 # [END delete_files]
