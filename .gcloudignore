@@ -25,3 +25,5 @@ env/
 tests/
 # Ignore PyCharm folder
 .idea/
+# Ignore .pyc files
+*.py[cod]
