@@ -11,6 +11,7 @@ import jinja2
 import webapp2
 import logging
 from google.appengine.ext import ndb
+from google.appengine.api import app_identity
 
 from src import model
 from src import storage
@@ -21,6 +22,9 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
+# Establecemos token de identidad
+auth_token = app_identity.get_access_token('https://www.googleapis.com/auth/cloud-platform')
+logging.info('WNP: Using token {} to represent identity {}'.format(auth_token, app_identity.get_service_account_name()))
 
 class MainPage(webapp2.RequestHandler):
 
