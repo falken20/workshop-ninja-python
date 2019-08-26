@@ -16,4 +16,4 @@ CLOUD_STORAGE_BUCKET = 'bucket-ninja'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 # Establecemos el namespace
-NAME_SPACE = 'Namespace_Richi'
+NAME_SPACE = 'NS_RICHI'
