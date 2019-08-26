@@ -9,7 +9,7 @@ import logging
 from google.cloud import storage
 import os
 import datetime
-from werkzeug import secure_filename
+from werkzeug.utils import secure_filename
 from werkzeug.exceptions import BadRequest
 
 

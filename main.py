@@ -11,6 +11,7 @@ import jinja2
 import webapp2
 import logging
 from google.appengine.ext import ndb
+from google.appengine.api import namespace_manager
 from google.appengine.api import app_identity
 
 from src import model
@@ -23,6 +24,9 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
+# Establecemos el namespace
+namespace_manager.set_namespace(config.NAME_SPACE)
+logging.info('WNP: Establecemos el namespace %s', namespace_manager.get_namespace())
 
 class MainPage(webapp2.RequestHandler):
 

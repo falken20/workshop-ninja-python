@@ -7,6 +7,7 @@
 # Uso de Third-party libraries
 
 # appengine_config.py
+from google.appengine.api.modules import modules
 from google.appengine.ext import vendor
 
 # Add any libraries install in the "lib" folder.
