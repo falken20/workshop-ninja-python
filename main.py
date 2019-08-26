@@ -14,7 +14,8 @@ from google.appengine.ext import ndb
 from google.appengine.api import app_identity
 
 from src import model
-from src import storage
+from src import config
+from src import storage_handler
 
 # Establecemos la carpeta que va a contener los templates que se van a usar
 JINJA_ENVIRONMENT = jinja2.Environment(
@@ -22,9 +23,6 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
-# Establecemos token de identidad
-auth_token = app_identity.get_access_token('https://www.googleapis.com/auth/cloud-platform')
-logging.info('WNP: Using token {} to represent identity {}'.format(auth_token, app_identity.get_service_account_name()))
 
 class MainPage(webapp2.RequestHandler):
 
@@ -44,8 +42,10 @@ class SaveNinja(webapp2.RequestHandler):
     def post(self):
         ninja_ID = self.request.get('id')
 
+        is_new_ninja = False
         if ninja_ID == '':
-            logging.info('WNP: Ninja %s no tiene ID', self.request.get('email'))
+            logging.info('WNP: Ninja %s no tiene ID, es un alta', self.request.get('email'))
+            is_new_ninja = True
             ninja = model.Ninja()
         else:
             ninja = model.Ninja.get_by_id(int(ndb.Key(model.Ninja, ninja_ID).id()))
@@ -58,14 +58,21 @@ class SaveNinja(webapp2.RequestHandler):
         location.department = self.request.get('department')
         ninja.location = location
 
-        fileUpload = self.request.POST.get('image')
+        file_upload = self.request.POST.get('image')
 
         # Comprobamos si ha seleccionado algún archivo
-        if hasattr(fileUpload, 'filename'):
-            logging.info('WNP: Imagen a almacenar en Google Cloud Storage -> %s', fileUpload.filename)
-            imageUrlGCS = storage.upload_file(fileUpload, fileUpload.filename)
-            logging.info('WNP: url imagen a almacenar en Google Cloud Storage %s', imageUrlGCS)
-            ninja.imageUrl = imageUrlGCS  
+        if hasattr(file_upload, 'filename'):
+            # Si es modificación y tenia imagen guardada, borramos imagen anterior de GCS
+            if not is_new_ninja and ninja.filename is not None:
+                storage_handler.delete_file('', ninja.filename)
+
+            # Guardamos fichero en GCS
+            ninja.filename, ninja.imageUrl = storage_handler.upload_file(
+                file_upload.file.read(), 
+                '',
+                file_upload.filename, 
+                file_upload.type)  
+            
         else:
             logging.info('WNP: Ninja sin imagen de perfil seleccionada, se queda como estaba')
 
@@ -133,8 +140,12 @@ class DeleteNinja(webapp2.RequestHandler):
     def get(self):
         ninja_ID = self.request.get('ninja_ID')
         ninja = model.Ninja.get_by_id(int(ndb.Key(model.Ninja, ninja_ID).id()))
-        ninja.key.delete()
 
+        # Si tenia imagen guardada borramos imagen anterior de GCS
+        if ninja.filename is not None:
+            storage_handler.delete_file('', ninja.filename)
+
+        ninja.key.delete()
 
         # Recargamos home con ninjas actualizados
         ninjas = model.Ninja.query().order(-model.Ninja.date).fetch(10)

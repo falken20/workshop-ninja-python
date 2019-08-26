@@ -27,3 +27,5 @@ tests/
 .idea/
 # Ignore .pyc files
 *.py[cod]
+# Ignore seg folder
+seg/

@@ -1,1 +1,2 @@
-GoogleAppEngineCloudStorageClient==1.9.22.1
+#GoogleAppEngineCloudStorageClient==1.9.22.1
+google-cloud-storage==1.0.0

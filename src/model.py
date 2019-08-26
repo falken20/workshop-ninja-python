@@ -20,6 +20,7 @@ class Location(ndb.Model):
 class Ninja(ndb.Model):
     email = ndb.StringProperty(required=True, indexed=True)
     name = ndb.StringProperty(required=True, indexed=False)
+    filename = ndb.StringProperty(required=False, indexed=False)
     imageUrl = ndb.StringProperty(indexed=False)
     date = ndb.DateTimeProperty(auto_now_add=True)
     location = ndb.StructuredProperty(Location)
