@@ -24,14 +24,16 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
-# Establecemos el namespace
-namespace_manager.set_namespace(config.NAME_SPACE)
-logging.info('WNP: Establecemos el namespace %s', namespace_manager.get_namespace())
 
 class MainPage(webapp2.RequestHandler):
 
     def get(self):
-        ninjas = model.Ninja.query().order(-model.Ninja.date).fetch(10)
+
+        # Indicamos el namespace
+        namespace_manager.set_namespace(config.NAME_SPACE)
+        logging.info('WNP: namespace ----> %s', namespace_manager.get_namespace())
+
+        ninjas = model.Ninja.query(namespace=config.NAME_SPACE).order(-model.Ninja.date).fetch(10)
 
         templateValues = {
             'ninjas': ninjas
@@ -50,14 +52,14 @@ class SaveNinja(webapp2.RequestHandler):
         if ninja_ID == '':
             logging.info('WNP: Ninja %s no tiene ID, es un alta', self.request.get('email'))
             is_new_ninja = True
-            ninja = model.Ninja()
+            ninja = model.Ninja(namespace=config.NAME_SPACE)
         else:
             ninja = model.Ninja.get_by_id(int(ndb.Key(model.Ninja, ninja_ID).id()))
 
         ninja.name = self.request.get('name')
         ninja.email = self.request.get('email')
     
-        location = model.Location()
+        location = model.Location(namespace=config.NAME_SPACE)
         location.building = self.request.get('building')
         location.department = self.request.get('department')
         ninja.location = location
@@ -81,7 +83,8 @@ class SaveNinja(webapp2.RequestHandler):
             logging.info('WNP: Ninja sin imagen de perfil seleccionada, se queda como estaba')
 
         ninja.put()
-        logging.info('WNP: Ninja %s almacenado correctamente', ninja.email)
+
+        logging.info('WNP: Ninja %s almacenado correctamente en namespace %s', ninja.email, namespace_manager.get_namespace())
 
         # Recargamos home con ninjas actualizados
         ninjas = model.Ninja.query().order(-model.Ninja.date).fetch(10)
@@ -111,6 +114,7 @@ class UpdateNinja(webapp2.RequestHandler):
         ninja_ID = self.request.get('ninja_ID')
         #ninja = model.Ninja.query(model.Ninja.key == ndb.Key(model.Ninja, ninja_ID).id()).fetch(1)[0]
         ninja = model.Ninja.get_by_id(int(ndb.Key(model.Ninja, ninja_ID).id()))
+        #ninja = ndb.Key(Ninja, ninja_ID, namespace=config.NAME_SPACE).get()
 
         action = 'Update'
         templateValues = {
@@ -126,6 +130,11 @@ class ShowNinja(webapp2.RequestHandler):
 
     def get(self):
         ninja_ID = self.request.get('ninja_ID')
+        
+        # Indicamos el namespace
+        namespace_manager.set_namespace(config.NAME_SPACE)
+        logging.info('WNP: namespace ----> %s', namespace_manager.get_namespace())
+ 
         #ninja = model.Ninja.query(model.Ninja.key == ndb.Key(model.Ninja, ninja_ID).id()).fetch(1)[0]
         ninja = model.Ninja.get_by_id(int(ndb.Key(model.Ninja, ninja_ID).id()))
 

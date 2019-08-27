@@ -16,6 +16,9 @@ handlers:
 # [END handlers]
 
 # [START libraries]
+# webapp2: Marco de trabajo web ligero de Python
+# jinja2: Lenguaje de plantilla moderno y de diseño amigable para Python
+# werkzeug: Biblioteca de herramientas de WSGI
 libraries:
 - name: webapp2
   version: latest
