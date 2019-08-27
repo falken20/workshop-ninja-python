@@ -29,11 +29,7 @@ class MainPage(webapp2.RequestHandler):
 
     def get(self):
 
-        # Indicamos el namespace
-        namespace_manager.set_namespace(config.NAME_SPACE)
-        logging.info('WNP: namespace ----> %s', namespace_manager.get_namespace())
-
-        ninjas = model.Ninja.query(namespace=config.NAME_SPACE).order(-model.Ninja.date).fetch(10)
+        ninjas = model.Ninja.query().order(-model.Ninja.date).fetch(10)
 
         templateValues = {
             'ninjas': ninjas
@@ -52,14 +48,14 @@ class SaveNinja(webapp2.RequestHandler):
         if ninja_ID == '':
             logging.info('WNP: Ninja %s no tiene ID, es un alta', self.request.get('email'))
             is_new_ninja = True
-            ninja = model.Ninja(namespace=config.NAME_SPACE)
+            ninja = model.Ninja()
         else:
             ninja = model.Ninja.get_by_id(int(ndb.Key(model.Ninja, ninja_ID).id()))
 
         ninja.name = self.request.get('name')
         ninja.email = self.request.get('email')
     
-        location = model.Location(namespace=config.NAME_SPACE)
+        location = model.Location()
         location.building = self.request.get('building')
         location.department = self.request.get('department')
         ninja.location = location
@@ -131,8 +127,6 @@ class ShowNinja(webapp2.RequestHandler):
     def get(self):
         ninja_ID = self.request.get('ninja_ID')
         
-        # Indicamos el namespace
-        namespace_manager.set_namespace(config.NAME_SPACE)
         logging.info('WNP: namespace ----> %s', namespace_manager.get_namespace())
  
         #ninja = model.Ninja.query(model.Ninja.key == ndb.Key(model.Ninja, ninja_ID).id()).fetch(1)[0]
