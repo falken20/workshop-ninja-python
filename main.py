@@ -109,9 +109,8 @@ class UpdateNinja(webapp2.RequestHandler):
 
     def get(self):
         ninja_ID = self.request.get('ninja_ID')
-        #ninja = model.Ninja.query(model.Ninja.key == ndb.Key(model.Ninja, ninja_ID).id()).fetch(1)[0]
-        #ninja = ndb.Key(Ninja, ninja_ID).get()
-        ninja = model.Ninja.get_by_id(int(ndb.Key(model.Ninja, ninja_ID).id()))
+
+        ninja = ndb.Key(model.Ninja, long(ninja_ID)).get()
 
         action = 'Update'
         templateValues = {
@@ -127,8 +126,7 @@ class ShowNinja(webapp2.RequestHandler):
 
     def get(self):
         ninja_ID = self.request.get('ninja_ID')
-         
-        #ninja = model.Ninja.query(model.Ninja.key == ndb.Key(model.Ninja, ninja_ID).id()).fetch(1)[0]
+
         ninja = model.Ninja.get_by_id(int(ndb.Key(model.Ninja, ninja_ID).id()))
 
         action = 'Show'

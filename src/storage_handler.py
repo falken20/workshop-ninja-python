@@ -6,9 +6,9 @@
 # Workshop Ninja Python
 
 import logging
-from google.cloud import storage
-import os
 import datetime
+from google.cloud import storage
+from google.cloud import exceptions
 from werkzeug.utils import secure_filename
 from werkzeug.exceptions import BadRequest
 
@@ -22,8 +22,7 @@ def _get_storage_client():
 def _check_extension(filename):
     if ('.' not in filename or
             filename.split('.').pop().lower() not in config.ALLOWED_EXTENSIONS):
-        raise BadRequest(
-            "{0} has an invalid name or extension".format(filename))
+        raise BadRequest('{0} tiene un nombre o extension invalido'.format(filename))
 
 
 def _safe_filename(filename):
@@ -46,20 +45,25 @@ def upload_file(file_stream, folder, filename, content_type):
 
     bucket_name = config.CLOUD_STORAGE_BUCKET
 
-    _check_extension(filename)
+    try:
+        _check_extension(filename)
 
-    filename = _safe_filename(filename)
-    client = _get_storage_client()
-    bucket = client.bucket(bucket_name)
+        filename = _safe_filename(filename)
+        client = _get_storage_client()
+        bucket = client.bucket(bucket_name)
 
-    blob = bucket.blob(folder + filename)
-    blob.upload_from_string(
-        file_stream,
-        content_type=content_type)
+        blob = bucket.blob(folder + filename)
+        blob.upload_from_string(
+            file_stream,
+            content_type=content_type)
 
-    logging.info('WNP: Fichero %s creado en GCS con url %s', filename, blob.public_url)
+        logging.info('WNP: Fichero %s creado en GCS con url %s', filename, blob.public_url)
 
-    return filename, blob.public_url
+        return filename, blob.public_url
+
+    except (BadRequest, Exception) as e:
+        logging.error('WPN: Error en fichero %s al subirlo en GCS: %s', filename, e)
+        return None, None
 
 
 def delete_file(folder, filename):
@@ -67,13 +71,21 @@ def delete_file(folder, filename):
     Borra un determinado archivo de GCS.
     """
 
-    bucket_name = config.CLOUD_STORAGE_BUCKET
+    try:
+        bucket_name = config.CLOUD_STORAGE_BUCKET
 
-    client = _get_storage_client()
-    bucket = client.bucket(bucket_name)
+        client = _get_storage_client()
+        bucket = client.bucket(bucket_name)
 
-    blob = bucket.blob(folder + filename)
-    blob.delete()
+        blob = bucket.blob(folder + filename)
+
+        blob.delete()
+
+    except exceptions.NotFound:
+        logging.warning('WPN: No se ha podido localizar el archivo %s en GSC', filename)
+
+    except Exception as e:
+        logging.error('WPN: Unexpected error: %s', e)
 
 
 def read_file(folder, filename):
