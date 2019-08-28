@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# coding=utf-8
 
 # Copyright 2019
 #
@@ -17,8 +18,9 @@ from src import config
 # Add any libraries install in the "lib" folder.
 vendor.add('lib')
 
-# Called only if the current namespace is not set.
+# Esta función sólo es llamada cuando no se asigna un namespace
 def namespace_manager_default_namespace_for_request():
-    # The returned string will be used as the Google Apps domain.
+    # Si quisieramos por ejemplo establecer el usuario logado como namespace (from google.appengine.api import users)
+    # return users.get_current_user().user_id() 
     logging.info('WNP: Establecemos el namespace: %s', config.NAME_SPACE)
     return config.NAME_SPACE

@@ -12,11 +12,11 @@ import webapp2
 import logging
 from google.appengine.ext import ndb
 from google.appengine.api import namespace_manager
-from google.appengine.api import app_identity
+
 
 from src import model
-from src import config
 from src import storage_handler
+from src import memcache_handler
 
 # Establecemos la carpeta que va a contener los templates que se van a usar
 JINJA_ENVIRONMENT = jinja2.Environment(
@@ -28,6 +28,8 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 class MainPage(webapp2.RequestHandler):
 
     def get(self):
+
+        memcache_handler.list_stats_memcache()
 
         ninjas = model.Ninja.query().order(-model.Ninja.date).fetch(10)
 
@@ -73,8 +75,7 @@ class SaveNinja(webapp2.RequestHandler):
                 file_upload.file.read(), 
                 '',
                 file_upload.filename, 
-                file_upload.type)  
-            
+                file_upload.type)
         else:
             logging.info('WNP: Ninja sin imagen de perfil seleccionada, se queda como estaba')
 
@@ -109,8 +110,8 @@ class UpdateNinja(webapp2.RequestHandler):
     def get(self):
         ninja_ID = self.request.get('ninja_ID')
         #ninja = model.Ninja.query(model.Ninja.key == ndb.Key(model.Ninja, ninja_ID).id()).fetch(1)[0]
+        #ninja = ndb.Key(Ninja, ninja_ID).get()
         ninja = model.Ninja.get_by_id(int(ndb.Key(model.Ninja, ninja_ID).id()))
-        #ninja = ndb.Key(Ninja, ninja_ID, namespace=config.NAME_SPACE).get()
 
         action = 'Update'
         templateValues = {
@@ -126,9 +127,7 @@ class ShowNinja(webapp2.RequestHandler):
 
     def get(self):
         ninja_ID = self.request.get('ninja_ID')
-        
-        logging.info('WNP: namespace ----> %s', namespace_manager.get_namespace())
- 
+         
         #ninja = model.Ninja.query(model.Ninja.key == ndb.Key(model.Ninja, ninja_ID).id()).fetch(1)[0]
         ninja = model.Ninja.get_by_id(int(ndb.Key(model.Ninja, ninja_ID).id()))
 

@@ -28,8 +28,7 @@ def _check_extension(filename):
 
 def _safe_filename(filename):
     """
-    Generates a safe filename that is unlikely to collide with existing objects
-    in Google Cloud Storage.
+    Genera un nombre de archivo seguro que es poco probable que choque con objetos existentes en GCS
     """
     filename = secure_filename(filename)
     date = datetime.datetime.utcnow().strftime("%Y-%m-%d-%H%M%S")
@@ -40,8 +39,7 @@ def _safe_filename(filename):
 
 def upload_file(file_stream, folder, filename, content_type):
     """
-    Uploads a file to a given Cloud Storage bucket and returns the public url
-    to the new object.
+    Sube un archivo a GCS y devuelve el nombre del archivo adaptado y la url publica
     """
 
     logging.info('WNP: Creando fichero %s de tipo %s en GCS', filename, content_type)
@@ -54,7 +52,7 @@ def upload_file(file_stream, folder, filename, content_type):
     client = _get_storage_client()
     bucket = client.bucket(bucket_name)
 
-    blob = bucket.blob(filename)
+    blob = bucket.blob(folder + filename)
     blob.upload_from_string(
         file_stream,
         content_type=content_type)
@@ -63,11 +61,24 @@ def upload_file(file_stream, folder, filename, content_type):
 
     return filename, blob.public_url
 
-    
+
+def delete_file(folder, filename):
+    """
+    Borra un determinado archivo de GCS.
+    """
+
+    bucket_name = config.CLOUD_STORAGE_BUCKET
+
+    client = _get_storage_client()
+    bucket = client.bucket(bucket_name)
+
+    blob = bucket.blob(folder + filename)
+    blob.delete()
+
+
 def read_file(folder, filename):
     """
-    Uploads a file to a given Cloud Storage bucket and returns the public url
-    to the new object.
+    Lee un determinado fichero de GCS.
     """
 
     bucket_name = config.CLOUD_STORAGE_BUCKET
@@ -78,18 +89,3 @@ def read_file(folder, filename):
     blob = bucket.blob(folder + filename)
 
     return blob.download_as_string()
-
-
-def delete_file(folder, filename):
-    """
-    Uploads a file to a given Cloud Storage bucket and returns the public url
-    to the new object.
-    """
-
-    bucket_name = config.CLOUD_STORAGE_BUCKET
-
-    client = _get_storage_client()
-    bucket = client.bucket(bucket_name)
-
-    blob = bucket.blob(folder + filename)
-    blob.delete()
