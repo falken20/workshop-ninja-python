@@ -17,4 +17,3 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 # Establecemos el namespace
 NAME_SPACE = ''
-#NAME_SPACE = ''
