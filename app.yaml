@@ -28,9 +28,5 @@ libraries:
   version: latest
 # [END libraries]
 
-# Etiqueta sólo valida para Python 2.7, usar fichero .gcloudignore
-skip_files:
-- README.md
-- requirements.*\.txt
-- .idea/
+
 
