@@ -161,6 +161,18 @@ class DeleteNinja(webapp2.RequestHandler):
         template = JINJA_ENVIRONMENT.get_template('index.html')
         self.response.write(template.render(templateValues))
 
+
+class SearchNinja(webapp2.RequestHandler):
+
+    def get(self):
+        action = 'Search'
+        templateValues = {
+            'action': action
+        }
+        template = JINJA_ENVIRONMENT.get_template('form-search.html')
+        self.response.write(template.render(templateValues))
+
+
 # [START app]
 app = webapp2.WSGIApplication([
     ('/', MainPage),
@@ -168,6 +180,7 @@ app = webapp2.WSGIApplication([
     ('/addNinja', AddNinja),
     ('/updateNinja', UpdateNinja),
     ('/showNinja', ShowNinja),
-    ('/deleteNinja', DeleteNinja)
+    ('/deleteNinja', DeleteNinja),
+    ('/searchNinja', SearchNinja)
     ], debug=True)
 # [END app]

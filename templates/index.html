@@ -7,16 +7,17 @@
 {% extends "base.html" %}
 
 {% block content %}
-<style>
-    h1, h2, h3, h4, h5, h6 {
-      color: white
-    }
-</style>
+
 
 <h3>Ninjas</h3>
 <a href="addNinja" class="btn btn-success">
   <i class="glyphicon glyphicon-plus"></i>
   Ninja
+</a>
+
+<a href="searchNinja" class="btn btn-info">
+  <i class="glyphicon glyphicon-search"></i>
+  Search
 </a>
 
 {% for ninja in ninjas %}

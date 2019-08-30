@@ -9,11 +9,6 @@
 
 {% block content %}
 
-<style>
-    h1, h2, h3, h4, h5, h6 {
-      color: white
-    }
-</style>
 
 <h3>{{action}} ninja</h3>
 
@@ -60,8 +55,8 @@
       </div>
 
       <div class="form-group row col-md-12">
-        <label for="imageUrl">Profile Image URL</label>
-        <input type="text" readonly name="imageUrl" id="imageUrl" value="{{ninja.imageUrl}}" class="form-control"/>
+        <label for="imageUrl">Profile Image Google Cloud Storage URL</label>
+        <h5>{{ninja.imageUrl|default('Sin imagen', True)}}</h5>
       </div>
 
 
@@ -69,7 +64,7 @@
 
     <div class="form-group col-md-2">
       {% if ninja.imageUrl %}
-        <img src="{{ninja.imageUrl}}" class="card-img" style="width: 200px; height: 200px; align: right;">
+        <img src="{{ninja.imageUrl}}" class="card-img" style="align: right; margin-top: 30px">
       {% else %}
           <img class="card-img" style="width: 150px; height: 150px; align: right;"
                src="https://www.theninjaproject.bbva/assets/vectors/timeline/timeline-icon-dojo-kata-public.svg">

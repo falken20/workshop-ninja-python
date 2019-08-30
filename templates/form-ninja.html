@@ -8,11 +8,6 @@
 
 {% block content %}
 
-<style>
-    h1, h2, h3, h4, h5, h6 {
-        color: white
-    }
-</style>
 
 <h3>{{action}} ninja</h3>
 
@@ -34,15 +29,16 @@
     </div>
 </div>
 
-<div class="btn-group">
-    <a href="/updateNinja?ninja_ID={{ ninja.key.id() }}" class="btn btn-primary">
+<div style="margin-top: 5px;">
+    <a href="/updateNinja?ninja_ID={{ ninja.key.id() }}" class="btn btn-primary" role="button">
         <i class="glyphicon glyphicon-edit"></i>
         Edit Ninja
     </a>
-    <a href="/deleteNinja?ninja_ID={{ ninja.key.id() }}" class="btn btn-danger">
+    <a href="/deleteNinja?ninja_ID={{ ninja.key.id() }}" class="btn btn-danger" role="button">
         <i class="glyphicon glyphicon-trash"></i>
         Delete Ninja
     </a>
 </div>
+
 
 {% endblock %}
