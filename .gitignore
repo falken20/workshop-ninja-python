@@ -151,6 +151,14 @@ Training
 Blog
 About
 
-#PyCharm
-.idea/
+#WPN
 
+*.iml
+*.py[co]$
+README.md
+requirements.*\.txt
+v?env/
+docs/
+.idea/
+.eclipse/
+.vscode

@@ -98,9 +98,11 @@ class AddNinja(webapp2.RequestHandler):
 
     def get(self):
         action = 'Add'
+
         templateValues = {
             'action': action
         }
+
         template = JINJA_ENVIRONMENT.get_template('form-add.html')
         self.response.write(template.render(templateValues))
 
@@ -165,10 +167,15 @@ class DeleteNinja(webapp2.RequestHandler):
 class SearchNinja(webapp2.RequestHandler):
 
     def get(self):
+        ninjas = model.Ninja.query().order(-model.Ninja.date).fetch(10)
+
         action = 'Search'
+
         templateValues = {
-            'action': action
+            'ninjas': ninjas,
+            'action': 'Search'
         }
+
         template = JINJA_ENVIRONMENT.get_template('form-search.html')
         self.response.write(template.render(templateValues))
 
