@@ -97,10 +97,8 @@ class SaveNinja(webapp2.RequestHandler):
 class AddNinja(webapp2.RequestHandler):
 
     def get(self):
-        action = 'Add'
-
         templateValues = {
-            'action': action
+            'action': 'Add'
         }
 
         template = JINJA_ENVIRONMENT.get_template('form-add.html')
@@ -114,9 +112,8 @@ class UpdateNinja(webapp2.RequestHandler):
 
         ninja = ndb.Key(model.Ninja, long(ninja_ID)).get()
 
-        action = 'Update'
         templateValues = {
-            'action': action,
+            'action': 'Update',
             'ninja': ninja
         }
 
@@ -131,9 +128,8 @@ class ShowNinja(webapp2.RequestHandler):
 
         ninja = model.Ninja.get_by_id(int(ndb.Key(model.Ninja, ninja_ID).id()))
 
-        action = 'Show'
         templateValues = {
-            'action': action,
+            'action': 'Show',
             'ninja': ninja
         }
 
@@ -167,9 +163,8 @@ class DeleteNinja(webapp2.RequestHandler):
 class SearchNinja(webapp2.RequestHandler):
 
     def get(self):
-        ninjas = model.Ninja.query().order(-model.Ninja.date).fetch(10)
 
-        action = 'Search'
+        ninjas = model.Ninja.query().order(-model.Ninja.date).fetch(10)
 
         templateValues = {
             'ninjas': ninjas,
@@ -180,6 +175,29 @@ class SearchNinja(webapp2.RequestHandler):
         self.response.write(template.render(templateValues))
 
 
+class GetFilterNinja(webapp2.RequestHandler):
+
+    def post(self):
+        ninja_filter = self.request.get('ninja_filter')
+
+        logging.info('WPN: Realizamos filtro con el valor %s', ninja_filter)
+
+        if ninja_filter == '' or ninja_filter is None:
+            logging.info('----------------> %s', ninja_filter)
+            ninjas = model.Ninja.query().order(-model.Ninja.date).fetch(10)
+        else:
+            # ninjas = model.Ninja.query(model.Ninja.email == ninja_filter).order(-model.Ninja.date)
+            ninjas = ndb.gql("SELECT * FROM Ninja WHERE email = :1 ORDER BY date", ninja_filter)
+
+        templateValues = {
+            'ninjas': ninjas,
+            'action': 'Search',
+            'ninja_filter': ninja_filter
+        }
+
+        template = JINJA_ENVIRONMENT.get_template('form-search.html')
+        self.response.write(template.render(templateValues))
+
 # [START app]
 app = webapp2.WSGIApplication([
     ('/', MainPage),
@@ -188,6 +206,7 @@ app = webapp2.WSGIApplication([
     ('/updateNinja', UpdateNinja),
     ('/showNinja', ShowNinja),
     ('/deleteNinja', DeleteNinja),
-    ('/searchNinja', SearchNinja)
+    ('/searchNinja', SearchNinja),
+    ('/getFilterNinja', GetFilterNinja)
     ], debug=True)
 # [END app]

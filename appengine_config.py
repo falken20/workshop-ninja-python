@@ -22,5 +22,5 @@ vendor.add('lib')
 def namespace_manager_default_namespace_for_request():
     # Si quisieramos por ejemplo establecer el usuario logado como namespace (from google.appengine.api import users)
     # return users.get_current_user().user_id() 
-    logging.info('WNP: Establecemos el namespace: %s', config.NAME_SPACE)
+    logging.info('WNP: Namespace --> %s', config.NAME_SPACE)
     return config.NAME_SPACE
