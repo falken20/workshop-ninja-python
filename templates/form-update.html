@@ -40,12 +40,12 @@
       <div class="form-row">
         <div class="form-group row col-md-6">
           <label for="department">Department</label>
-          <input type="text" name="department" id="department" value="{{ninja.location.department}}" class="form-control"/>
+          <input type="text" name="department" id="department" value="{{ninja.department}}" class="form-control"/>
         </div>
 
         <div class="form-group col-md-6">
           <label for="building">Building</label>
-          <input type="text" name="building" id="building" value="{{ninja.location.building}}" class="form-control"/>
+          <input type="text" name="building" id="building" value="{{ninja.building}}" class="form-control"/>
         </div>
       </div>
 
@@ -55,7 +55,7 @@
       </div>
 
       <div class="form-group row col-md-12">
-        <label for="imageUrl">Profile Image Google Cloud Storage URL</label>
+        <label>Profile Image Google Cloud Storage URL</label>
         <h5>{{ninja.imageUrl|default('Sin imagen', True)}}</h5>
       </div>
 

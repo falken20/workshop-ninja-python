@@ -56,11 +56,8 @@ class SaveNinja(webapp2.RequestHandler):
 
         ninja.name = self.request.get('name')
         ninja.email = self.request.get('email')
-    
-        location = model.Location()
-        location.building = self.request.get('building')
-        location.department = self.request.get('department')
-        ninja.location = location
+        ninja.building = self.request.get('building')
+        ninja.department = self.request.get('department')
 
         file_upload = self.request.POST.get('image')
 
@@ -183,11 +180,10 @@ class GetFilterNinja(webapp2.RequestHandler):
         logging.info('WPN: Realizamos filtro con el valor %s', ninja_filter)
 
         if ninja_filter == '' or ninja_filter is None:
-            logging.info('----------------> %s', ninja_filter)
             ninjas = model.Ninja.query().order(-model.Ninja.date).fetch(10)
         else:
-            # ninjas = model.Ninja.query(model.Ninja.email == ninja_filter).order(-model.Ninja.date)
-            ninjas = ndb.gql("SELECT * FROM Ninja WHERE email = :1 ORDER BY date", ninja_filter)
+            ninjas = model.Ninja.query(model.Ninja.department == ninja_filter).order(-model.Ninja.date)
+            # ninjas = ndb.gql("SELECT * FROM Ninja WHERE email = :1 ORDER BY date", ninja_filter)
 
         templateValues = {
             'ninjas': ninjas,

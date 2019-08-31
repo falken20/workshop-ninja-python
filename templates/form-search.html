@@ -16,7 +16,7 @@
 <form action="/getFilterNinja" method="post" enctype="multipart/form-data">
 
   <div class="form-group">
-    <label for="ninja_filter">Email</label>
+    <label for="ninja_filter">Department</label>
     <input type="text" name="ninja_filter" id="ninja_filter" value="{{ninja_filter}}" class="form-control"/>
   </div>
 
@@ -54,8 +54,8 @@
 
       <td>{{ninja.name}}</td>
       <td>{{ninja.email}}</td>
-      <td>{{ninja.location.department|default('Unknown', True)}}</td>
-      <td>{{ninja.location.building|default('Unknown', True)}}</td>
+      <td>{{ninja.department|default('Unknown', True)}}</td>
+      <td>{{ninja.building|default('Unknown', True)}}</td>
       <td>{{ninja.date}}</td>
 
     </tr>

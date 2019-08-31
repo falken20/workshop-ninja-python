@@ -1,9 +1,17 @@
 indexes:
+
 - kind: Ninja
   ancestor: no
   properties:
-  - name: date
-    direction: desc
   - name: email
     direction: asc
+  - name: date
+    direction: desc
 
+- kind: Ninja
+  ancestor: no
+  properties:
+  - name: department
+    direction: asc
+  - name: date
+    direction: desc
