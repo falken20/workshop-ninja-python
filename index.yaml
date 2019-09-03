@@ -15,3 +15,5 @@ indexes:
     direction: asc
   - name: date
     direction: desc
+
+# TODO: Crear nuevo indice para cambiar búsqueda por Building y date ascendente

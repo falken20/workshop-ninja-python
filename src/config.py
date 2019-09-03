@@ -12,7 +12,7 @@ import os
 PROJECT_ID = os.environ.get('PROJECT_ID', '')
 
 # Establecemos el nombre del bucket asi como extensiones permitidas
-CLOUD_STORAGE_BUCKET = 'bucket-ninja'
+CLOUD_STORAGE_BUCKET = 'bucket-ninja-ws'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 # Establecemos el namespace
