@@ -155,7 +155,6 @@ About
 
 *.iml
 *.py[co]$
-README.md
 requirements.*\.txt
 v?env/
 docs/

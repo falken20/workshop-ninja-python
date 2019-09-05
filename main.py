@@ -183,7 +183,7 @@ class GetFilterNinja(webapp2.RequestHandler):
             ninjas = model.Ninja.query().order(-model.Ninja.date).fetch(10)
         else:
             ninjas = model.Ninja.query(model.Ninja.department == ninja_filter).order(-model.Ninja.date)
-            # ninjas = ndb.gql("SELECT * FROM Ninja WHERE email = :1 ORDER BY date", ninja_filter)
+            # ninjas = ndb.gql("SELECT * FROM Ninja WHERE department = :1 ORDER BY date", ninja_filter)
 
         templateValues = {
             'ninjas': ninjas,

@@ -15,5 +15,5 @@ PROJECT_ID = os.environ.get('PROJECT_ID', '')
 CLOUD_STORAGE_BUCKET = 'bucket-ninja-ws'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
-# Establecemos el namespace
+# TODO 1: Establecemos el namespace que luego será usado en appengine_config.py
 NAME_SPACE = ''

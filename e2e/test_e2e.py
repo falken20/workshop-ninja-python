@@ -18,14 +18,14 @@ import uuid
 import os
 import requests
 
-URL = os.environ.get('GUESTBOOK_URL')
+URL = os.environ.get('WSNINJA_URL')
 
 
 def test_e2e():
     assert URL
     print ("Running test against {}".format(URL))
     r = requests.get(URL)
-    assert b'Guestbook' in r.content
+    assert b'Workshop Ninja' in r.content
     u = uuid.uuid4()
     data = {'content': str(u)}
     r = requests.post(URL + '/sign', data)
