@@ -1,0 +1,84 @@
+{#
+# Copyright 2019
+#
+# Workshop Ninja Python
+#}
+
+{# [START form] #}
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<h3>{{action}} ninja</h3>
+
+<!-- El formulario necesita incluir enctype="multipart/form-data" para procesar ficheros -->
+
+<form action="/saveNinja" method="post" enctype="multipart/form-data">
+
+  <div class="form-row">
+
+    <div class="form-group col-md-10">
+
+      <div class="form-group row col-md-12">
+        <label for="name">ID</label>
+        <input type="text" readonly name="id" id="id" value="{{ninja.key.id()}}" class="form-control"/>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group row col-md-6">
+          <label for="name">Name</label>
+          <input type="text" name="name" id="name" value="{{ninja.name}}" class="form-control"/>
+        </div>
+
+        <div class="form-group col-md-6">
+          <label for="name">Email</label>
+          <input type="text" name="email" id="email" value="{{ninja.email}}" class="form-control"/>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group row col-md-6">
+          <label for="department">Department</label>
+          <input type="text" name="department" id="department" value="{{ninja.department}}" class="form-control"/>
+        </div>
+
+        <div class="form-group col-md-6">
+          <label for="building">Building</label>
+          <input type="text" name="building" id="building" value="{{ninja.building}}" class="form-control"/>
+        </div>
+      </div>
+
+      <div class="form-group row col-md-12">
+        <label for="image">Profile Image</label>
+        <input type="file" name="image" id="image" class="form-control"/>
+      </div>
+
+      <div class="form-group row col-md-12">
+        <label>Profile Image Google Cloud Storage URL</label>
+        <h5>{{ninja.imageUrl|default('Sin imagen', True)}}</h5>
+      </div>
+
+
+    </div>
+
+    <div class="form-group col-md-2">
+      {% if ninja.imageUrl %}
+        <img src="{{ninja.imageUrl}}" class="card-img" style="align: right; margin-top: 30px">
+      {% else %}
+          <img class="card-img" style="width: 150px; height: 150px; align: right;"
+               src="https://www.theninjaproject.bbva/assets/vectors/timeline/timeline-icon-dojo-kata-public.svg">
+      {% endif %}
+    </div>
+
+  </div>
+
+  <div class="form-group row col-md-12">
+        <button type="submit" class="btn btn-success">Save</button>
+  </div>
+
+
+</form>
+
+{% endblock %}
+{# [END form] #}

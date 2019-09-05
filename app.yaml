@@ -1,14 +1,32 @@
-# Copyright 2019
-#
-# Workshop Ninja Python
+runtime: python27
+api_version: 1
+threadsafe: true
 
-runtime: python
-env: flex
-# Gunicorn "Green Unicorn" es un Python Web Server.
-entrypoint: gunicorn -b :$PORT main:app
+# [START handlers]
+handlers:
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon\.ico
 
-runtime_config:
-  python_version: 3
+- url: /bootstrap
+  static_dir: bootstrap
 
-beta_settings:
+- url: /.*
+  script: main.app
+# [END handlers]
+
+# [START libraries]
+# webapp2: Marco de trabajo web ligero de Python
+# jinja2: Lenguaje de plantilla moderno y de diseño amigable para Python
+# werkzeug: Biblioteca de herramientas de WSGI
+libraries:
+- name: webapp2
+  version: latest
+- name: jinja2
+  version: latest
+- name: werkzeug
+  version: latest
+# [END libraries]
+
+
 

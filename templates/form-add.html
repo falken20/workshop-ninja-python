@@ -9,31 +9,30 @@
 
 {% block content %}
 
-<style>
-    h1, h2, h3, h4, h5, h6 {
-      color: white
-    }
-</style>
 
-<h3>{{action}} ninja</h3>
+<h3>{{action}} Ninja</h3>
 
-<!-- El formulario HTML se crea mediante el uso del motor de plantillas predeterminado de Flask -->
+<!-- El formulario necesita incluir enctype="multipart/form-data" para procesar ficheros -->
 
-<form method="POST" enctype="multipart/form-data">
-
+<form action="/saveNinja" method="post" enctype="multipart/form-data">
   <div class="form-group">
     <label for="name">Name</label>
-    <input type="text" name="name" id="name" value="{{ninja.name}}" class="form-control"/>
+    <input type="text" name="name" id="name" class="form-control"/>
+  </div>
+
+  <div class="form-group">
+    <label for="name">Email</label>
+    <input type="text" name="email" id="email"class="form-control"/>
   </div>
 
   <div class="form-group">
     <label for="department">Department</label>
-    <input type="text" name="department" id="department" value="{{ninja.department}}" class="form-control"/>
+    <input type="text" name="department" id="department"class="form-control"/>
   </div>
 
   <div class="form-group">
     <label for="building">Building</label>
-    <input type="text" name="building" id="building" value="{{ninja.building}}" class="form-control"/>
+    <input type="text" name="building" id="building"class="form-control"/>
   </div>
 
   <div class="form-group">
@@ -43,7 +42,7 @@
 
   <div class="form-group hidden">
     <label for="imageUrl">Profile Image URL</label>
-    <input type="text" name="imageUrl" id="imageUrl" value="{{ninja.imageUrl}}" class="form-control"/>
+    <input type="text" name="imageUrl" id="imageUrl"class="form-control"/>
   </div>
 
   <button type="submit" class="btn btn-success">Save</button>

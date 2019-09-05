@@ -150,3 +150,14 @@ API
 Training
 Blog
 About
+
+#WPN
+
+*.iml
+*.py[co]$
+requirements.*\.txt
+v?env/
+docs/
+.idea/
+.eclipse/
+.vscode

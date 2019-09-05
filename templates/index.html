@@ -7,30 +7,31 @@
 {% extends "base.html" %}
 
 {% block content %}
-<style>
-    h1, h2, h3, h4, h5, h6 {
-      color: white
-    }
-</style>
+
 
 <h3>Ninjas</h3>
-<a href="/ninjas/add" class="btn btn-success">
+<a href="addNinja" class="btn btn-success">
   <i class="glyphicon glyphicon-plus"></i>
   Ninja
 </a>
 
+<a href="searchNinja" class="btn btn-info">
+  <i class="glyphicon glyphicon-search"></i>
+  Search
+</a>
+
 {% for ninja in ninjas %}
 <div class="media">
-  <a href="/ninjas/{{ninja.id}}">
+  <a href="/showNinja?ninja_ID={{ ninja.key.id() }}">
     <div class="media-left">
       {% if ninja.imageUrl %}
-        <img src="{{ninja.imageUrl}}" style="width: 120px; height: 120px;">
+        <img src="{{ninja.imageUrl}}" style="width: 100px; height: 100px;">
       {% else %}
-        <img src="https://www.theninjaproject.bbva/assets/vectors/timeline/timeline-icon-dojo-kata-public.svg">
+        <img src="https://www.theninjaproject.bbva/assets/vectors/timeline/timeline-icon-dojo-kata-public.svg" style="width: 100px; height: 100px;">
       {% endif %}
     </div>
     <div class="media-body">
-      <h4>{{ninja.name}}</h4>
+      <h4>{{ninja.name}} - {{ninja.email}}</h4>
       <h5>{{ninja.department|default('Unknown', True)}}</h5>
       <h5>{{ninja.building|default('Unknown', True)}}</h5>
     </div>
@@ -40,12 +41,5 @@
 <h6>No Ninjas found</h6>
 {% endfor %}
 
-{% if next_page_token %}
-<nav>
-  <ul class="pager">
-    <li><a href="?page_token={{next_page_token}}">More</a></li>
-  </ul>
-</nav>
-{% endif %}
 
 {% endblock %}
