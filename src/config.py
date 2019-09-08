@@ -9,7 +9,7 @@ import os
 
 
 # Asignamos a la variable el ID del proyecto
-PROJECT_ID = os.environ.get('PROJECT_ID', '')
+PROJECT_ID = 'dev-bbva-gae-cicd'
 
 # Establecemos el nombre del bucket asi como extensiones permitidas
 CLOUD_STORAGE_BUCKET = 'bucket-ninja-ws'
