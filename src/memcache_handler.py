@@ -12,6 +12,10 @@ from google.appengine.api import memcache
 
 def list_stats_memcache():
     stats = memcache.get_stats()
-    logging.info('WPN: Memcache Hits: %s', format(stats['hits']))
-    logging.info('WPN: Memcache Misses: %s', format(stats['misses']))
-    logging.info('WPN: Memcache Items: %s', format(stats['items']))
+    logging.info('WNP: Memcache Items: %s', format(stats['items']))
+
+
+def add_key_memcache(key, value, time=3600):
+    memcache.set(format(key), format(value), time)
+    logging.info('WNP: Valor añadido a memcache: {0}, {1}'.format(key, value))
+    list_stats_memcache()
