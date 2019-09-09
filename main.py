@@ -29,8 +29,6 @@ class MainPage(webapp2.RequestHandler):
 
     def get(self):
 
-        memcache_handler.list_stats_memcache()
-
         ninjas = model.Ninja.query().order(-model.Ninja.date).fetch(10)
 
         templateValues = {
@@ -76,9 +74,16 @@ class SaveNinja(webapp2.RequestHandler):
         else:
             logging.info('WNP: Ninja sin imagen de perfil seleccionada, se queda como estaba')
 
-        ninja.put()
+        key = ninja.put()
 
-        logging.info('WNP: Ninja %s almacenado correctamente en namespace %s', ninja.email, namespace_manager.get_namespace())
+        # TODO
+        # Lo añadimos a la memcache
+        memcache_handler.add_key_memcache(key.id(), ninja.email)
+
+        # TODO
+        ns = namespace_manager.get_namespace() if namespace_manager.get_namespace() else 'default'
+
+        logging.info('WNP: Ninja %s almacenado correctamente en namespace %s', ninja.email, ns)
 
         # Recargamos home con ninjas actualizados
         ninjas = model.Ninja.query().order(-model.Ninja.date).fetch(10)

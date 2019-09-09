@@ -16,6 +16,7 @@ from werkzeug.exceptions import BadRequest
 import config
 
 def _get_storage_client():
+    logging.info('WNP: Obtenemos el cliente para guardar en GCS %s', config.PROJECT_ID)
     return storage.Client(config.PROJECT_ID)
 
 
