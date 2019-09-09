@@ -16,6 +16,6 @@ def list_stats_memcache():
 
 
 def add_key_memcache(key, value, time=3600):
-    memcache.set(format(key), format(value), time)
+    memcache.set(format(key), value, time)
     logging.info('WNP: Valor añadido a memcache: {0}, {1}'.format(key, value))
     list_stats_memcache()

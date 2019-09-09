@@ -1,0 +1,80 @@
+{#
+# Copyright 2019
+#
+# Workshop Ninja Python
+#}
+
+{# [START form] #}
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<h3>{{action}} cursos</h3>
+
+<!-- El formulario necesita incluir enctype="multipart/form-data" para procesar ficheros -->
+
+<form action="/saveCursos" method="post" enctype="multipart/form-data">
+
+  <div class="form-row">
+
+    <div class="form-group col-md-10">
+
+
+      <div class="form-row">
+        <div class="form-group row col-md-6">
+          <label for="name">Curso</label>
+          <input type="text" name="name" id="name" value="{{curso.name}}" class="form-control"/>
+        </div>
+
+        <div class="form-group col-md-6">
+          <label for="name">Puntos</label>
+          <input type="text" name="points" id="points" value="{{curso.points}}" class="form-control"/>
+        </div>
+      </div>
+
+
+    </div>
+
+  </div>
+
+  <div class="form-group row col-md-12">
+        <button type="submit" class="btn btn-success">Save</button>
+  </div>
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">Curso</th>
+      <th scope="col">Puntos</th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+{% for curso in cursos %}
+
+    <tr>
+      <td>{{curso.name}}</td>
+      <td>{{curso.points}}</td>
+    </tr>
+
+{% else %}
+    <tr>
+      <td>
+        <div class="form-group">
+          <h6>No Cursos found</h6>
+        </div>
+      </td>
+    </tr>
+{% endfor %}
+
+  </tbody>
+</table>
+
+</form>
+
+{% endblock %}
+{# [END form] #}

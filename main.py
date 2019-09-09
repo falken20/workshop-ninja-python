@@ -78,7 +78,7 @@ class SaveNinja(webapp2.RequestHandler):
 
         # TODO
         # Lo añadimos a la memcache
-        memcache_handler.add_key_memcache(key.id(), ninja.email)
+        memcache_handler.add_key_memcache(key.id(), ninja)
 
         # TODO
         ns = namespace_manager.get_namespace() if namespace_manager.get_namespace() else 'default'
