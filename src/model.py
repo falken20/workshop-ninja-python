@@ -19,3 +19,5 @@ class Ninja(ndb.Model):
     imageUrl = ndb.StringProperty(indexed=False)
     date = ndb.DateTimeProperty(auto_now_add=True, indexed=True)
 # [END ndb class]
+
+
