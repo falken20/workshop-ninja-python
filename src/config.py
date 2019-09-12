@@ -6,6 +6,7 @@
 # Workshop Ninja Python
 
 import os
+from google.appengine.api.modules import modules
 
 
 # Asignamos a la variable el ID del proyecto
@@ -15,5 +16,5 @@ PROJECT_ID = 'dev-bbva-gae-cicd'
 CLOUD_STORAGE_BUCKET = 'bucket-ninja-ws'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
-# TODO 1: Establecemos el namespace que luego será usado en appengine_config.py
-NAME_SPACE = ''
+# El nombre de namespace se toma del nombre del servicio desplegado
+NAME_SPACE = modules.get_current_module_name()

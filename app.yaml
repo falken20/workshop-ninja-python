@@ -1,18 +1,24 @@
 runtime: python27
 api_version: 1
 threadsafe: true
+# TODO: Indicar aquí el UID del usuario en minúscula
+service: <uid>
 
 # [START handlers]
 handlers:
 - url: /favicon\.ico
   static_files: favicon.ico
   upload: favicon\.ico
+  secure: always
 
 - url: /bootstrap
   static_dir: bootstrap
+  secure: always
 
 - url: /.*
   script: main.app
+  login: required
+  secure: always
 # [END handlers]
 
 # [START libraries]
