@@ -6,6 +6,7 @@
 # Workshop Ninja Python
 
 import logging
+import base64
 import datetime
 from google.cloud import storage
 from google.cloud import exceptions
@@ -36,6 +37,20 @@ def _safe_filename(filename):
     basename, extension = filename.rsplit('.', 1)
 
     return "{0}-{1}.{2}".format(basename, date, extension)
+
+
+def upload_base64_file(data, filename):
+    """
+    Sube un archivo a GCS a partir del base 64 y devuelve la url publica
+    """
+    logging.info('WNP: Creando fichero %s a partir de base 64 en GCS', filename)
+    bucket_name = config.CLOUD_STORAGE_BUCKET
+    client = _get_storage_client()
+    bucket = client.bucket(bucket_name)
+    blob = bucket.blob(filename)
+    blob.upload_from_string(base64.b64decode(data))
+    logging.info('WNP: Fichero %s creado en GCS', filename)
+    return blob.public_url
 
 
 def upload_file(file_stream, folder, filename, content_type):
