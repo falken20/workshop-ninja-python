@@ -11,12 +11,13 @@ import jinja2
 import webapp2
 import logging
 from google.appengine.ext import ndb
-from google.appengine.api import namespace_manager
 
 
 from src import model
 from src import storage_handler
 from src import memcache_handler
+from src import namespace_handler
+
 
 # Establecemos la carpeta que va a contener los templates que se van a usar
 JINJA_ENVIRONMENT = jinja2.Environment(
@@ -74,6 +75,7 @@ class SaveNinja(webapp2.RequestHandler):
         else:
             logging.info('WNP: Ninja sin imagen de perfil seleccionada, se queda como estaba')
 
+        # Guardamos Ninja
         key = ninja.put()
 
         # TODO
@@ -81,9 +83,7 @@ class SaveNinja(webapp2.RequestHandler):
         memcache_handler.add_key_memcache(key.id(), ninja)
 
         # TODO
-        ns = namespace_manager.get_namespace() if namespace_manager.get_namespace() else 'default'
-
-        logging.info('WNP: Ninja %s almacenado correctamente en namespace %s', ninja.email, ns)
+        logging.info('WNP: Ninja %s almacenado correctamente en namespace %s', ninja.email, namespace_handler.get_name_ns())
 
         # Recargamos home con ninjas actualizados
         ninjas = model.Ninja.query().order(-model.Ninja.date).fetch(10)
@@ -143,6 +143,7 @@ class DeleteNinja(webapp2.RequestHandler):
 
     def get(self):
         ninja_ID = self.request.get('ninja_ID')
+
         ninja = model.Ninja.get_by_id(int(ndb.Key(model.Ninja, ninja_ID).id()))
 
         # Si tenia imagen guardada borramos imagen anterior de GCS
