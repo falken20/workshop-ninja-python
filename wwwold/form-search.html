@@ -1,0 +1,77 @@
+{#
+# Copyright 2019
+#
+# Workshop Ninja Python
+#}
+
+{# [START form] #}
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<h3>{{action}} Ninja</h3>
+
+
+<form action="/getFilterNinja" method="post" enctype="multipart/form-data">
+
+  <div class="form-group">
+    <label for="ninja_filter">Department</label>
+    <input type="text" name="ninja_filter" id="ninja_filter" value="{{ninja_filter}}" class="form-control"/>
+  </div>
+
+  <div class="form-group">
+    <button type="submit" class="btn btn-info">Search</button>
+  </div>
+
+</form>
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Department</th>
+      <th scope="col">Building</th>
+      <th scope="col">Date</th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+{% for ninja in ninjas %}
+
+    <tr>
+      <td><a href="/showNinja?ninja_ID={{ ninja.key.id() }}">
+      {% if ninja.imageUrl %}
+        <img src="{{ninja.imageUrl}}" class="img-small">
+      {% else %}
+        <img src="https://www.theninjaproject.bbva/assets/vectors/timeline/timeline-icon-dojo-kata-public.svg" class="img-small">
+      {% endif %}
+      </a></td>
+
+      <td>{{ninja.name}}</td>
+      <td>{{ninja.email}}</td>
+      <td>{{ninja.department|default('Unknown', True)}}</td>
+      <td>{{ninja.building|default('Unknown', True)}}</td>
+      <td>{{ninja.date}}</td>
+
+    </tr>
+
+{% else %}
+    <tr>
+      <td>
+        <div class="form-group">
+          <h6>No Ninjas found</h6>
+        </div>
+      </td>
+    </tr>
+{% endfor %}
+
+  </tbody>
+</table>
+
+{% endblock %}
+{# [END form] #}

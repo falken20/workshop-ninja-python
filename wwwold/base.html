@@ -1,0 +1,62 @@
+{#
+# Copyright 2019
+#
+# Workshop Ninja Python
+#}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+  <style>
+    .bg-default {
+      background: url(https://www.theninjaproject.bbva/assets/vectors/backgrounds/bg-default.svg) repeat-x 45% -50px transparent;
+      background-image: url(https://www.theninjaproject.bbva/assets/vectors/backgrounds/bg-default.svg);
+      background-position-x: 45%;
+      background-position-y: 50px;
+      background-size: auto;
+      background-attachment: initial;
+      background-origin: initial;
+      background-clip: initial;
+      background-color: #4e8072;
+      background-size: auto;
+    }
+    label, h1, h2, h3, h4, h5, h6, td, th {
+      color: white !important;
+    }
+    img {
+      width: 200px;
+      height: 200px;
+    }
+    .img-small {
+      width: 40px;
+      height: 40px;
+    }
+  </style>
+
+  <head>
+    <title>Workshop Ninja Python</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+  </head>
+  <body class="bg-default">
+    <div class="navbar navbar-default">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="/">
+          <img src="https://www.theninjaproject.bbva/assets/vectors/ninja/logo.svg" style="height: 58px; width: 160px" alt="Logo" class="default-logo">
+          </a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container">
+      {% block content %}{% endblock %}
+    </div>
+    {{user}}
+  </body>
+</html>

@@ -1,0 +1,48 @@
+{#
+# Copyright 2019
+#
+# Workshop Ninja Python
+#}
+
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<h3>{{action}} ninja</h3>
+
+<div class="media">
+    {# [START ninja_image] #}
+    <div class="media-left">
+    {% if ninja.imageUrl %}
+        <img style="width: 100px; height: 100px;" src="{{ninja.imageUrl}}">
+    {% else %}
+        <img style="width: 100px; height: 100px;"
+             src="https://www.theninjaproject.bbva/assets/vectors/timeline/timeline-icon-dojo-kata-public.svg">
+    {% endif %}
+    </div>
+    {# [END ninja_image] #}
+    <div class="media-body">
+    <h4>{{ninja.name}} - {{ninja.email}}</h4>
+    <h5>{{ninja.department|default('Unknown', True)}}</h5>
+    <h5>{{ninja.building|default('Unknown', True)}}</h5>
+    </div>
+</div>
+
+<div style="margin-top: 5px;">
+    <a href="/updateNinja?ninja_ID={{ ninja.key.id() }}" class="btn btn-primary" role="button">
+        <i class="glyphicon glyphicon-edit"></i>
+        Edit Ninja
+    </a>
+    <a href="" class="btn btn-success" role="button">
+        <i class="glyphicon glyphicon-list"></i>
+        Cursos
+    </a>
+    <a href="/deleteNinja?ninja_ID={{ ninja.key.id() }}" class="btn btn-danger" role="button">
+        <i class="glyphicon glyphicon-trash"></i>
+        Delete Ninja
+    </a>
+</div>
+
+
+{% endblock %}
