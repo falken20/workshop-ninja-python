@@ -6,6 +6,7 @@
 # Workshop Ninja Python
 
 import logging
+import re
 
 import webapp2
 
@@ -19,7 +20,11 @@ from src.utils import send, read_body
 class Ninjas(webapp2.RequestHandler):
 
     def list(self):
-        ninjas = model.Ninja.query().order(-model.Ninja.date).fetch(10)
+        department = self.request.get('department', default_value=None)
+        if department is None:
+            ninjas = model.Ninja.query().order(model.Ninja.name).fetch()
+        else:
+            ninjas = model.Ninja.query(model.Ninja.department == department).order(model.Ninja.name).fetch()
         send(self, 200, ninjas)
 
     @staticmethod
@@ -34,8 +39,17 @@ class Ninjas(webapp2.RequestHandler):
         # Comprobamos si ha seleccionado algún archivo
         if 'image' in data:
             image_data = data['image']
-            # Guardamos fichero en GCS
-            storage_handler.upload_base64_file(image_data, str(key.id()))
+            if image_data != "":
+                # Guardamos fichero en GCS
+                # Contenido: 'data:image/png;base64,iVBORw...'
+                # Extraer tipo mime de la imagen y datos en base 64
+                mime, data = re.match('data:(.*);base64,(.*)', image_data).groups()
+                ninja.image = storage_handler.upload_base64_file(data, mime, str(key.id()))
+            else:
+                # Borramos imagen en GCS
+                storage_handler.delete_file(str(key.id()))
+                ninja.image = None
+            ninja.put()
 
         logging.info('WNP: Ninja %s almacenado correctamente en namespace %s', ninja.email, namespace_handler.get_name_ns())
 

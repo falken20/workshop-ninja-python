@@ -1,107 +1,113 @@
 <!DOCTYPE html>
 
 <html lang="en">
-
-  <style>
-    .bg-default {
-      background: url(https://www.theninjaproject.bbva/assets/vectors/backgrounds/bg-default.svg) repeat-x 45% -50px transparent;
-      background-image: url(https://www.theninjaproject.bbva/assets/vectors/backgrounds/bg-default.svg);
-      background-position-x: 45%;
-      background-position-y: 50px;
-      background-size: auto;
-      background-attachment: initial;
-      background-origin: initial;
-      background-clip: initial;
-      background-color: #4e8072;
-      background-size: auto;
-    }
-    label, h1, h2, h3, h4, h5, h6, td, th {
-      color: white !important;
-    }
-    img {
-      width: 200px;
-      height: 200px;
-    }
-    .img-small {
-      width: 40px;
-      height: 40px;
-    }
-  </style>
-
-  <head>
-    <title>Workshop Ninja Python</title>
+<head>
+    <title>Hello Ninja GAE!!</title>
     <meta charset="utf-8">
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script src="app.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 
-  </head>
-  <body class="bg-default">
-    <div class="navbar navbar-default">
-      <div class="container">
-        <div class="navbar-header">
-          <a href="/">
-          <img src="https://www.theninjaproject.bbva/assets/vectors/ninja/logo.svg" style="height: 58px; width: 160px" alt="Logo" class="default-logo">
-          </a>
-        </div>
-        <ul class="nav navbar-nav">
-          <li></li>
-        </ul>
-      </div>
-    </div>
+    <script src="app.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="bg-default">
+<div class="navbar navbar-default">
     <div class="container">
-      <h3>Ninjas</h3>
-      <a id="add-ninja-btn" class="btn btn-success">
+        <div class="navbar-header">
+            <a href="/">
+                <img src="https://www.theninjaproject.bbva/assets/vectors/ninja/logo.svg"
+                     style="height: 58px; width: 160px" alt="Logo" class="default-logo">
+            </a>
+        </div>
+    </div>
+</div>
+<div class="container header">
+    <h1>Hello Ninja GAE</h1>
+    <a id="add-ninja-btn" class="btn btn-success">
         <i class="glyphicon glyphicon-plus"></i>
         Ninja
-      </a>
+    </a>
 
-      <a href="" class="btn btn-info">
-        <i class="glyphicon glyphicon-search"></i>
-        Search
-      </a>
-
-      <a href="" class="btn btn-info">
+    <a href="" class="btn btn-info">
         <i class="glyphicon glyphicon-globe"></i>
         Top Ninja
-      </a>
+    </a>
+</div>
+
+<div id="ninja-list" class="container" style="dislay: none;">
+    <div class="form-group">
+        <label for="ninja_filter">Department</label>
+        <input type="text" name="ninja_filter" id="department" class="form-control"/>
     </div>
 
-    <div id="add-ninja-form" style="display: none;">
-      <form>
-        <div class="form-group">
-          <label for="name">Name</label>
-          <input type="text" name="name" id="add-ninja-form-name" class="form-control"/>
-        </div>
-
-        <div class="form-group">
-          <label for="name">Email</label>
-          <input type="text" name="email" id="add-ninja-form-email"class="form-control"/>
-        </div>
-
-        <div class="form-group">
-          <label for="department">Department</label>
-          <input type="text" name="department" id="add-ninja-form-department"class="form-control"/>
-        </div>
-
-        <div class="form-group">
-          <label for="building">Building</label>
-          <input type="text" name="building" id="add-ninja-form-building"class="form-control"/>
-        </div>
-
-        <div class="form-group">
-          <label for="image">Profile Image</label>
-          <input type="file" name="image" id="add-ninja-form-image" class="form-control"/>
-        </div>
-
-        <div class="form-group hidden">
-          <label for="imageUrl">Profile Image URL</label>
-          <input type="text" name="imageUrl" id="add-ninja-form-imageUrl"class="form-control"/>
-        </div>
-
-        <button id="add-ninja-submit" class="btn btn-success">Save</button>
-      </form>
+    <div class="form-group">
+        <button id="search-btn" class="btn btn-info">Search</button>
     </div>
-  </body>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Department</th>
+            <th scope="col">Building</th>
+        </tr>
+        </thead>
+        <tbody id="ninja-list-content">
+        </tbody>
+    </table>
+</div>
+
+<div id="ninja-list-empty" class="container" style="display: none;">
+    <h3>No Ninjas found</h3>
+</div>
+
+<div id="add-ninja-form" class="container" style="display: none;">
+    <form>
+        <input type="hidden" id="add-ninja-form-id"/>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" name="name" id="add-ninja-form-name" class="form-control"/>
+            </div>
+
+            <div class="form-group">
+                <label for="name">Email</label>
+                <input type="text" name="email" id="add-ninja-form-email" class="form-control"/>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="department">Department</label>
+                <input type="text" name="department" id="add-ninja-form-department" class="form-control"/>
+            </div>
+
+            <div class="form-group">
+                <label for="building">Building</label>
+                <input type="text" name="building" id="add-ninja-form-building" class="form-control"/>
+            </div>
+        </div>
+
+        <div class="form-row form-row-left">
+            <img id="ninja-image" class="ninja-image" src="resources/ninja.svg">
+        </div>
+
+        <div class="form-row form-row-left">
+            <button id="select-image" class="btn btn-info">Select image</button>
+            <button id="clear-image" class="btn btn-info">Delete image</button>
+            <input type="file" name="image" id="add-ninja-form-image" style="display: none;"/>
+        </div>
+
+        <div class="form-submit">
+            <button id="add-ninja-submit" class="btn btn-success">Save</button>
+            <button id="add-ninja-cancel" class="btn btn-info">Cancel</button>
+        </div>
+    </form>
+</div>
+
+</body>
 </html>

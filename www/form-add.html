@@ -1,122 +1,35 @@
-<!DOCTYPE html>
-
-<html lang="en">
-
-  <style>
-    .bg-default {
-      background: url(https://www.theninjaproject.bbva/assets/vectors/backgrounds/bg-default.svg) repeat-x 45% -50px transparent;
-      background-image: url(https://www.theninjaproject.bbva/assets/vectors/backgrounds/bg-default.svg);
-      background-position-x: 45%;
-      background-position-y: 50px;
-      background-size: auto;
-      background-attachment: initial;
-      background-origin: initial;
-      background-clip: initial;
-      background-color: #4e8072;
-      background-size: auto;
-    }
-    label, h1, h2, h3, h4, h5, h6, td, th {
-      color: white !important;
-    }
-    img {
-      width: 200px;
-      height: 200px;
-    }
-    .img-small {
-      width: 40px;
-      height: 40px;
-    }
-  </style>
-
-  <head>
-    <title>Workshop Ninja Python</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-
-  </head>
-  <body class="bg-default">
-    <div class="navbar navbar-default">
-      <div class="container">
-        <div class="navbar-header">
-          <a href="/">
-          <img src="https://www.theninjaproject.bbva/assets/vectors/ninja/logo.svg" style="height: 58px; width: 160px" alt="Logo" class="default-logo">
-          </a>
+<div id="add-ninja-form" class="container" style="display: none;">
+    <form>
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" name="name" id="add-ninja-form-name" class="form-control"/>
         </div>
-        <ul class="nav navbar-nav">
-          <li></li>
-        </ul>
-      </div>
-    </div>
-    <div class="container">
-      <h3>Ninjas</h3>
-      <a href="form-add.html" class="btn btn-success">
-        <i class="glyphicon glyphicon-plus"></i>
-        Ninja
-      </a>
 
-      <a href="searchNinja" class="btn btn-info">
-        <i class="glyphicon glyphicon-search"></i>
-        Search
-      </a>
+        <div class="form-group">
+            <label for="name">Email</label>
+            <input type="text" name="email" id="add-ninja-form-email" class="form-control"/>
+        </div>
 
-      <a href="" class="btn btn-info">
-        <i class="glyphicon glyphicon-globe"></i>
-        Top Ninja
-      </a>
+        <div class="form-group">
+            <label for="department">Department</label>
+            <input type="text" name="department" id="add-ninja-form-department" class="form-control"/>
+        </div>
 
-    </div>
-  </body>
-</html>
-{#
-# Copyright 2019
-#
-# Workshop Ninja Python
-#}
+        <div class="form-group">
+            <label for="building">Building</label>
+            <input type="text" name="building" id="add-ninja-form-building" class="form-control"/>
+        </div>
 
-{# [START form] #}
-{% extends "base.html" %}
+        <div class="form-group">
+            <label for="image">Profile Image</label>
+            <input type="file" name="image" id="add-ninja-form-image" class="form-control"/>
+        </div>
 
-{% block content %}
+        <div class="form-group hidden">
+            <label for="imageUrl">Profile Image URL</label>
+            <input type="text" name="imageUrl" id="add-ninja-form-imageUrl" class="form-control"/>
+        </div>
 
-
-<h3>{{action}} Ninja</h3>
-
-<!-- El formulario necesita incluir enctype="multipart/form-data" para procesar ficheros -->
-
-<form action="/saveNinja" method="post" enctype="multipart/form-data">
-  <div class="form-group">
-    <label for="name">Name</label>
-    <input type="text" name="name" id="name" class="form-control"/>
-  </div>
-
-  <div class="form-group">
-    <label for="name">Email</label>
-    <input type="text" name="email" id="email"class="form-control"/>
-  </div>
-
-  <div class="form-group">
-    <label for="department">Department</label>
-    <input type="text" name="department" id="department"class="form-control"/>
-  </div>
-
-  <div class="form-group">
-    <label for="building">Building</label>
-    <input type="text" name="building" id="building"class="form-control"/>
-  </div>
-
-  <div class="form-group">
-    <label for="image">Profile Image</label>
-    <input type="file" name="image" id="image" class="form-control"/>
-  </div>
-
-  <div class="form-group hidden">
-    <label for="imageUrl">Profile Image URL</label>
-    <input type="text" name="imageUrl" id="imageUrl"class="form-control"/>
-  </div>
-
-  <button type="submit" class="btn btn-success">Save</button>
-</form>
-
-{% endblock %}
-{# [END form] #}
+        <button id="add-ninja-submit" class="btn btn-success">Save</button>
+    </form>
+</div>

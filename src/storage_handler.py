@@ -39,7 +39,7 @@ def _safe_filename(filename):
     return "{0}-{1}.{2}".format(basename, date, extension)
 
 
-def upload_base64_file(data, filename):
+def upload_base64_file(data, mime, filename):
     """
     Sube un archivo a GCS a partir del base 64 y devuelve la url publica
     """
@@ -48,9 +48,26 @@ def upload_base64_file(data, filename):
     client = _get_storage_client()
     bucket = client.bucket(bucket_name)
     blob = bucket.blob(filename)
-    blob.upload_from_string(base64.b64decode(data))
+    blob.upload_from_string(base64.b64decode(data), content_type=mime)
     logging.info('WNP: Fichero %s creado en GCS', filename)
-    return blob.public_url
+    return "https://storage.cloud.google.com/" + bucket_name + "/" + filename
+
+
+def delete_file(filename):
+    """
+    Borra un determinado archivo de GCS.
+    """
+    try:
+        bucket_name = config.CLOUD_STORAGE_BUCKET
+        client = _get_storage_client()
+        bucket = client.bucket(bucket_name)
+        blob = bucket.blob(filename)
+        blob.delete()
+    except exceptions.NotFound:
+        logging.warning('WPN: No se ha podido localizar el archivo %s en GSC', filename)
+
+    except Exception as e:
+        logging.error('WPN: Unexpected error: %s', e)
 
 
 def upload_file(file_stream, folder, filename, content_type):
@@ -81,28 +98,6 @@ def upload_file(file_stream, folder, filename, content_type):
     except (BadRequest, Exception) as e:
         logging.error('WPN: Error en fichero %s al subirlo en GCS: %s', filename, e)
         return None, None
-
-
-def delete_file(folder, filename):
-    """
-    Borra un determinado archivo de GCS.
-    """
-
-    try:
-        bucket_name = config.CLOUD_STORAGE_BUCKET
-
-        client = _get_storage_client()
-        bucket = client.bucket(bucket_name)
-
-        blob = bucket.blob(folder + filename)
-
-        blob.delete()
-
-    except exceptions.NotFound:
-        logging.warning('WPN: No se ha podido localizar el archivo %s en GSC', filename)
-
-    except Exception as e:
-        logging.error('WPN: Unexpected error: %s', e)
 
 
 def read_file(folder, filename):
