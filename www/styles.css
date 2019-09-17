@@ -58,7 +58,44 @@ td {
     cursor: pointer;
 }
 
+#ninja-list {
+    display: flex;
+    flex-direction: column;
+}
+
 #ninja-list-empty {
     display: flex;
     justify-content: center;
+}
+
+.ninja-list-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.ninja-search {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    align-items: center;
+}
+
+.ninja-search > * {
+    margin-right: 10px;
+}
+
+.ninja-search > input {
+    max-width: 300px;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+}
+
+.form-submit > *{
+    margin-right: 10px;
 }

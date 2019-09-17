@@ -25,25 +25,24 @@
 </div>
 <div class="container header">
     <h1>Hello Ninja GAE</h1>
-    <a id="add-ninja-btn" class="btn btn-success">
-        <i class="glyphicon glyphicon-plus"></i>
-        Ninja
-    </a>
-
-    <a href="" class="btn btn-info">
-        <i class="glyphicon glyphicon-globe"></i>
-        Top Ninja
-    </a>
 </div>
 
-<div id="ninja-list" class="container" style="dislay: none;">
-    <div class="form-group">
-        <label for="ninja_filter">Department</label>
-        <input type="text" name="ninja_filter" id="department" class="form-control"/>
-    </div>
+<div class="container loading" style="display: none;">
+    <img src="resources/loading.svg">
+</div>
 
-    <div class="form-group">
-        <button id="search-btn" class="btn btn-info">Search</button>
+
+<div id="ninja-list" class="container" style="display: none;">
+    <div class="ninja-list-header">
+        <div class="ninja-search">
+            <label for="ninja_filter">Department</label>
+            <input type="text" name="ninja_filter" id="department" class="form-control"/>
+            <button id="search-btn" class="btn btn-info">Search</button>
+        </div>
+        <a id="add-ninja-btn" class="btn btn-success">
+            <i class="glyphicon glyphicon-plus"></i>
+            Ninja
+        </a>
     </div>
 
     <table class="table">
@@ -68,40 +67,45 @@
 <div id="add-ninja-form" class="container" style="display: none;">
     <form>
         <input type="hidden" id="add-ninja-form-id"/>
-        <div class="form-row">
-            <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" name="name" id="add-ninja-form-name" class="form-control"/>
-            </div>
+        <div style="display: flex;">
+            <div>
+                <div class="form-row form-row-left">
+                    <img id="ninja-image" class="ninja-image" src="resources/ninja.svg">
+                </div>
 
-            <div class="form-group">
-                <label for="name">Email</label>
-                <input type="text" name="email" id="add-ninja-form-email" class="form-control"/>
+                <div class="form-row form-row-left">
+                    <button id="select-image" class="btn btn-info">Select image</button>
+                    <button id="clear-image" class="btn btn-info">Delete image</button>
+                    <input type="file" name="image" id="add-ninja-form-image" style="display: none;"/>
+                </div>
+            </div>
+            <div style="flex-grow: 1; margin-top: 30px; margin-left: 30px;">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" name="name" id="add-ninja-form-name" class="form-control"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name">Email</label>
+                        <input type="text" name="email" id="add-ninja-form-email" class="form-control"/>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="department">Department</label>
+                        <input type="text" name="department" id="add-ninja-form-department" class="form-control"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="building">Building</label>
+                        <input type="text" name="building" id="add-ninja-form-building" class="form-control"/>
+                    </div>
+                </div>
+
             </div>
         </div>
-
-        <div class="form-row">
-            <div class="form-group">
-                <label for="department">Department</label>
-                <input type="text" name="department" id="add-ninja-form-department" class="form-control"/>
-            </div>
-
-            <div class="form-group">
-                <label for="building">Building</label>
-                <input type="text" name="building" id="add-ninja-form-building" class="form-control"/>
-            </div>
-        </div>
-
-        <div class="form-row form-row-left">
-            <img id="ninja-image" class="ninja-image" src="resources/ninja.svg">
-        </div>
-
-        <div class="form-row form-row-left">
-            <button id="select-image" class="btn btn-info">Select image</button>
-            <button id="clear-image" class="btn btn-info">Delete image</button>
-            <input type="file" name="image" id="add-ninja-form-image" style="display: none;"/>
-        </div>
-
         <div class="form-submit">
             <button id="add-ninja-submit" class="btn btn-success">Save</button>
             <button id="add-ninja-cancel" class="btn btn-info">Cancel</button>

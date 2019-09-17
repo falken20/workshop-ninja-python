@@ -22,6 +22,7 @@ $(document).ready(function () {
     }
 
     function loadNinjas(department) {
+        $('.loading').show();
         $.ajax({
             type: "GET",
             url: '/ninjas' + (department ? "?department=" + department : ""),
@@ -29,6 +30,7 @@ $(document).ready(function () {
             contentType: 'application/json',
             success: function (response) {
                 console.log(response);
+                $('.loading').hide();
                 showNinjaList(true, response);
             }
         });
@@ -54,6 +56,7 @@ $(document).ready(function () {
             $('.ninja').click(function (e) {
                 showNinjaForm(true, JSON.parse(decodeURI($(e.target).parents('tr').find('input[type="hidden"]').val())));
             });
+            $('#ninja-list').show();
         } else {
             $('#ninja-list').hide();
         }
@@ -134,7 +137,8 @@ $(document).ready(function () {
     });
 
     $('#add-ninja-cancel').click(function () {
-        showNinjaList(true);
+        $('#add-ninja-form').hide();
+        loadNinjas();
     });
 
     $('#select-image').click(function () {
