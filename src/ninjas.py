@@ -27,6 +27,13 @@ class Ninjas(webapp2.RequestHandler):
             ninjas = model.Ninja.query(model.Ninja.department == department).order(model.Ninja.name).fetch()
         send(self, 200, ninjas)
 
+    def retrieve(self, ninja_id):
+        ninja = model.Ninja.get_by_id(int(ninja_id))
+        if ninja is None:
+            send(self, 404)
+        else:
+            send(self, 200, ninja)
+
     @staticmethod
     def save_ninja(ninja, data):
         ninja.name = data['name']
@@ -90,5 +97,5 @@ class Ninjas(webapp2.RequestHandler):
             send(self, 404)
         else:
             ninja.key.delete()
-            send(self, 200)
+            send(self, 204)
 

@@ -8,8 +8,12 @@
     background-color: #4e8072;
 }
 
-label, h1, h2, h3, h4, h5, h6, td, th {
+label, h1, h2, h3, h4, h5, h6, td, th, span, a {
     color: white !important;
+}
+
+a {
+    cursor: pointer;
 }
 
 td {

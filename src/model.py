@@ -20,14 +20,12 @@ class Ninja(ndb.Model):
 # [END ndb class]
 
 
-# [START ndb Curso class]
-class Curso(ndb.Model):
-    ninjaId = ndb.StringProperty(required=True, indexed=True)
+# [START ndb Mooc class]
+class Mooc(ndb.Model):
+    ninja_id = ndb.IntegerProperty(required=True, indexed=True)
     name = ndb.StringProperty(required=True, indexed=False)
     desc = ndb.StringProperty(required=True, indexed=False)
     points = ndb.IntegerProperty(required=True, indexed=False)
-    date = ndb.StringProperty(required=True, indexed=False)
-    filename = ndb.StringProperty(required=True, indexed=False)
-    fileUrl = ndb.StringProperty(required=True, indexed=False)
+    date = ndb.DateTimeProperty(auto_now=True, indexed=True)
 # [END ndb class]
 

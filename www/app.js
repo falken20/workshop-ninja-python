@@ -1,6 +1,24 @@
 // A $( document ).ready() block.
 $(document).ready(function () {
 
+    var views = {
+        'loading': '.loading',
+        'ninja-list': '#ninja-list',
+        'ninja-form': '#add-ninja-form',
+        'ninja-detail': '#ninja-detail',
+        'mooc-form': '#mooc-form'
+    }
+
+    function setView(view) {
+        Object.keys(views).forEach(function(v) {
+            if (v === view) {
+                $(views[v]).show();
+            } else {
+                $(views[v]).hide();
+            }
+        });
+    }
+
     function row(content, type) {
         return '<tr class="' + type + '">' + content + '</tr>';
     }
@@ -13,6 +31,10 @@ $(document).ready(function () {
         return '<input type="hidden" value="' + encodeURI(content) + '"/>';
     }
 
+    function link(content) {
+        return '<a>' + content + '</a>';
+    }
+
     function image(image) {
         if (image) {
             return '<img class="img-small" src="' + image + '">';
@@ -22,7 +44,9 @@ $(document).ready(function () {
     }
 
     function loadNinjas(department) {
-        $('.loading').show();
+        if (department === undefined) {
+            setView('loading')
+        }
         $.ajax({
             type: "GET",
             url: '/ninjas' + (department ? "?department=" + department : ""),
@@ -30,63 +54,88 @@ $(document).ready(function () {
             contentType: 'application/json',
             success: function (response) {
                 console.log(response);
-                $('.loading').hide();
-                showNinjaList(true, response);
+                showNinjaList(response);
             }
         });
     }
 
-    function showNinjaList(show, list) {
-        if (show) {
-            if (list == undefined || list.length == 0) {
-                $('#ninja-list-empty').show();
-            } else {
-                $('#ninja-list-empty').hide();
-            }
-            $('#ninja-list-content').empty();
-            list.forEach(function (i) {
-                $('#ninja-list-content').append(row(
-                    hidden(JSON.stringify(i)) +
-                    column(image(i.image)) +
-                    column(i.name) +
-                    column(i.email) +
-                    column(i.department) +
-                    column(i.building), "ninja"));
-            });
-            $('.ninja').click(function (e) {
-                showNinjaForm(true, JSON.parse(decodeURI($(e.target).parents('tr').find('input[type="hidden"]').val())));
-            });
-            $('#ninja-list').show();
+    function showNinjaList(list) {
+        setView('ninja-list')
+        if (list == undefined || list.length == 0) {
+            $('#ninja-list-empty').show();
         } else {
-            $('#ninja-list').hide();
+            $('#ninja-list-empty').hide();
+        }
+        $('#ninja-list-content').empty();
+        list.forEach(function (i) {
+            $('#ninja-list-content').append(row(
+                hidden(JSON.stringify(i)) +
+                column(image(i.image)) +
+                column(i.name) +
+                column(i.email) +
+                column(i.department) +
+                column(i.building), "ninja"));
+        });
+        $('.ninja').click(function (e) {
+            showNinjaDetail(JSON.parse(decodeURI($(e.target).parents('tr').find('input[type="hidden"]').val())))
+        });
+    }
+
+    function showNinjaDetail(data) {
+        setView('ninja-detail')
+        if (data) {
+            $('#ninja-detail-id').text(data._id);
+            $('#ninja-detail-name').text(data.name);
+            $('#ninja-detail-email').text(data.email);
+            $('#ninja-detail-department').text(data.department);
+            $('#ninja-detail-building').text(data.building);
+            if (data.image) {
+                $('#ninja-detail-image').prop('src', data.image);
+            }
+            $('#ninja-detail-list-content').empty();
+            $.ajax({
+                type: "GET",
+                url: '/ninjas/' + data._id + '/moocs',
+                success: function (response) {
+                    response.forEach(function (i) {
+                        $('#ninja-detail-list-content').append(row(
+                            hidden(JSON.stringify(i)) +
+                            column(i.name) +
+                            column(i.desc) +
+                            column(i.points) +
+                            column(i.date) +
+                            column(link('Delete')), "mooc"));
+                    });
+                }
+            });
         }
     }
 
-    function showNinjaForm(show, data) {
-        if (show) {
-            showNinjaList(false);
-            $('form').trigger("reset");
-            $('#add-ninja-form-image').val(undefined);
-            $('#add-ninja-form-id').val(undefined);
-            console.log(data);
-            if (data) {
-                $('#add-ninja-form-id').val(data._id);
-                $('#add-ninja-form-name').val(data.name);
-                $('#add-ninja-form-email').val(data.email);
-                $('#add-ninja-form-department').val(data.department);
-                $('#add-ninja-form-building').val(data.building);
-                if (data.image) {
-                    $('#ninja-image').prop('src', data.image);
+    function showNinjaForm(id) {
+        setView('ninja-form')
+        $('form').trigger("reset");
+        $('#add-ninja-form-image').val(undefined);
+        $('#add-ninja-form-id').val(undefined);
+        if (id) {
+            $.ajax({
+                type: "GET",
+                url: '/ninjas/' + id,
+                success: function (data) {
+                    $('#add-ninja-form-id').val(data._id);
+                    $('#add-ninja-form-name').val(data.name);
+                    $('#add-ninja-form-email').val(data.email);
+                    $('#add-ninja-form-department').val(data.department);
+                    $('#add-ninja-form-building').val(data.building);
+                    if (data.image) {
+                        $('#ninja-image').prop('src', data.image);
+                    }
                 }
-            }
-            $('#add-ninja-form').show();
-        } else {
-            $('#add-ninja-form').hide();
+            });
         }
     }
 
     $('#add-ninja-btn').click(function () {
-        showNinjaForm(true);
+        showNinjaForm();
     });
 
     $('#add-ninja-submit').click(function () {
@@ -115,7 +164,6 @@ $(document).ready(function () {
                 data: JSON.stringify(data),
                 success: function (response) {
                     console.log(response);
-                    showNinjaForm(false);
                     loadNinjas();
                 }
             });
@@ -128,7 +176,6 @@ $(document).ready(function () {
                 data: JSON.stringify(data),
                 success: function (response) {
                     console.log(response);
-                    showNinjaForm(false);
                     loadNinjas();
                 }
             });
@@ -139,6 +186,29 @@ $(document).ready(function () {
     $('#add-ninja-cancel').click(function () {
         $('#add-ninja-form').hide();
         loadNinjas();
+    });
+
+    $('#ninja-detail-back-btn').click(function () {
+        $('#add-ninja-form').hide();
+        loadNinjas();
+    });
+
+    $('#ninja-detail-edit-btn').click(function() {
+        var id = $('#ninja-detail-id').text();
+        showNinjaForm(id);
+    });
+
+    $('#ninja-detail-delete-btn').click(function() {
+        var id = $('#ninja-detail-id').text();
+        if (confirm("Delete?")) {
+            $.ajax({
+                type: "DELETE",
+                url: '/ninjas/' + id,
+                success: function () {
+                    loadNinjas();
+                }
+            });
+        }
     });
 
     $('#select-image').click(function () {
@@ -163,6 +233,35 @@ $(document).ready(function () {
     $('#search-btn').click(function () {
         var department = $('#department').val();
         loadNinjas(department);
+    });
+
+    $('#ninja-detail-add-mooc-btn').click(function() {
+        setView('mooc-form');
+        $('#mooc-form-ninja-id').text($('#ninja-detail-id').text());
+    });
+
+    $('#mooc-form-cancel').click(function() {
+        var id = $('#mooc-form-ninja-id').text();
+        showNinjaDetail(id);
+    });
+
+    $('#mooc-form-submit').click(function() {
+        var id = $('#mooc-form-ninja-id').text();
+        var data = {
+            name: $('#mooc-form-name').val(),
+            desc: $('#mooc-form-desc').val(),
+            points: parseInt($('#mooc-form-points').val())
+        }
+        $.ajax({
+            type: "POST",
+            url: '/ninjas/' + id + "/moocs",
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function (response) {
+                showNinjaDetail(id);
+            }
+        });
     });
 
     loadNinjas();

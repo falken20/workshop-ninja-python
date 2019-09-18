@@ -58,10 +58,44 @@
         <tbody id="ninja-list-content">
         </tbody>
     </table>
+
+    <div id="ninja-list-empty" class="container" style="display: none;">
+        <h3>No Ninjas found</h3>
+    </div>
 </div>
 
-<div id="ninja-list-empty" class="container" style="display: none;">
-    <h3>No Ninjas found</h3>
+<div id="ninja-detail" class="container" style="display: none;">
+    <div style="display: flex; flex-direction: row; align-items: flex-start;">
+        <img id="ninja-detail-image" class="ninja-image" src="resources/ninja.svg">
+        <div style="display: flex; flex-direction: column; flex-grow: 1;">
+            <div style="display: flex; flex-direction: row; align-items: baseline">
+                <h2 id="ninja-detail-name"></h2>
+                <span>(</span><h5 id="ninja-detail-id"></h5><span>)</span>
+            </div>
+            <h4 id="ninja-detail-email"></h4>
+            <h4 id="ninja-detail-department"></h4>
+            <h4 id="ninja-detail-building"></h4>
+        </div>
+        <button id="ninja-detail-back-btn" class="btn btn-info">Back</button>
+    </div>
+    <div style="display: flex; flex-direction: row; justify-content: flex-end;">
+        <button id="ninja-detail-edit-btn" class="btn btn-info">Edit</button>
+        <button id="ninja-detail-delete-btn" class="btn btn-info">Delete</button>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Points</th>
+            <th scope="col">Date</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody id="ninja-detail-list-content">
+        </tbody>
+    </table>
+    <button id="ninja-detail-add-mooc-btn" class="btn btn-info">Add MOOC</button>
 </div>
 
 <div id="add-ninja-form" class="container" style="display: none;">
@@ -112,6 +146,39 @@
         </div>
     </form>
 </div>
+
+<div  id="mooc-form" class="container" style="display: none;">
+    <form>
+        <input type="hidden" id="mooc-form-ninja-id"/>
+        <div style="display: flex;">
+            <div style="flex-grow: 1; margin-top: 30px; margin-left: 30px;">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" name="name" id="mooc-form-name" class="form-control"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="desc">Description</label>
+                        <input type="text" name="desc" id="mooc-form-desc" class="form-control"/>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="points">Points</label>
+                        <input type="number" name="points" id="mooc-form-points" class="form-control"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-submit">
+            <button id="mooc-form-submit" class="btn btn-success">Save</button>
+            <button id="mooc-form-cancel" class="btn btn-info">Cancel</button>
+        </div>
+    </form>
+</div>
+
 
 </body>
 </html>
