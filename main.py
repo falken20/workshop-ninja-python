@@ -18,9 +18,9 @@ app = WSGIApplication([
     Route('/ninjas/<ninja_id>', handler=Ninjas, handler_method='update', methods=['PUT']),
     Route('/ninjas/<ninja_id>', handler=Ninjas, handler_method='delete', methods=['DELETE']),
 
-    Route('/ninjas/<ninja_id>/moocs', handler=Moocs, handler_method='list', methods=['GET']),
-    Route('/ninjas/<ninja_id>/moocs', handler=Moocs, handler_method='create', methods=['POST']),
-    Route('/ninjas/<ninja_id>/moocs/<mooc_id>', handler=Moocs, handler_method='retrieve', methods=['GET']),
-    Route('/ninjas/<ninja_id>/moocs/<mooc_id>', handler=Moocs, handler_method='delete', methods=['DELETE']),
+    Route('/moocs', handler=Moocs, handler_method='list', methods=['GET']),
+    Route('/moocs', handler=Moocs, handler_method='create', methods=['POST']),
+    Route('/moocs/<mooc_id>', handler=Moocs, handler_method='retrieve', methods=['GET']),
+    Route('/moocs/<mooc_id>', handler=Moocs, handler_method='delete', methods=['DELETE']),
     ], debug=True)
 # [END app]

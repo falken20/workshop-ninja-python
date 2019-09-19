@@ -19,22 +19,6 @@ $(document).ready(function () {
         });
     }
 
-    function row(content, type) {
-        return '<tr class="' + type + '">' + content + '</tr>';
-    }
-
-    function column(content) {
-        return '<td>' + content + '</td>';
-    }
-
-    function hidden(content) {
-        return '<input type="hidden" value="' + encodeURI(content) + '"/>';
-    }
-
-    function link(content) {
-        return '<a>' + content + '</a>';
-    }
-
     function image(image) {
         if (image) {
             return '<img class="img-small" src="' + image + '">';
@@ -47,15 +31,8 @@ $(document).ready(function () {
         if (department === undefined) {
             setView('loading')
         }
-        $.ajax({
-            type: "GET",
-            url: '/ninjas' + (department ? "?department=" + department : ""),
-            dataType: 'json',
-            contentType: 'application/json',
-            success: function (response) {
-                console.log(response);
-                showNinjaList(response);
-            }
+        listNinjas(department, function(response) {
+            showNinjaList(response);
         });
     }
 
@@ -93,20 +70,24 @@ $(document).ready(function () {
                 $('#ninja-detail-image').prop('src', data.image);
             }
             $('#ninja-detail-list-content').empty();
-            $.ajax({
-                type: "GET",
-                url: '/ninjas/' + data._id + '/moocs',
-                success: function (response) {
-                    response.forEach(function (i) {
-                        $('#ninja-detail-list-content').append(row(
-                            hidden(JSON.stringify(i)) +
-                            column(i.name) +
-                            column(i.desc) +
-                            column(i.points) +
-                            column(i.date) +
-                            column(link('Delete')), "mooc"));
+            listMoocs(data._id, function(response) {
+                response.forEach(function (i) {
+                    $('#ninja-detail-list-content').append(row(
+                        hidden(JSON.stringify(i)) +
+                        column(i.name) +
+                        column(i.desc) +
+                        column(i.points) +
+                        column(i.date) +
+                        column(link('Delete', 'mooc-delete')), "mooc"));
+                    $('.mooc-delete').click(function (e) {
+                        if (confirm('Delete?')) {
+                            var mooc = JSON.parse(decodeURI($(e.target).parents('tr').find('input[type="hidden"]').val()));
+                            deleteMooc(mooc._id, function() {
+                                showNinjaDetail(data);
+                            });
+                        }
                     });
-                }
+                });
             });
         }
     }
@@ -117,18 +98,14 @@ $(document).ready(function () {
         $('#add-ninja-form-image').val(undefined);
         $('#add-ninja-form-id').val(undefined);
         if (id) {
-            $.ajax({
-                type: "GET",
-                url: '/ninjas/' + id,
-                success: function (data) {
-                    $('#add-ninja-form-id').val(data._id);
-                    $('#add-ninja-form-name').val(data.name);
-                    $('#add-ninja-form-email').val(data.email);
-                    $('#add-ninja-form-department').val(data.department);
-                    $('#add-ninja-form-building').val(data.building);
-                    if (data.image) {
-                        $('#ninja-image').prop('src', data.image);
-                    }
+            getNinja(id, function() {
+                $('#add-ninja-form-id').val(data._id);
+                $('#add-ninja-form-name').val(data.name);
+                $('#add-ninja-form-email').val(data.email);
+                $('#add-ninja-form-department').val(data.department);
+                $('#add-ninja-form-building').val(data.building);
+                if (data.image) {
+                    $('#ninja-image').prop('src', data.image);
                 }
             });
         }
@@ -156,29 +133,9 @@ $(document).ready(function () {
         }
 
         if (id) {
-            $.ajax({
-                type: "PUT",
-                url: '/ninjas/' + id,
-                dataType: 'json',
-                contentType: 'application/json',
-                data: JSON.stringify(data),
-                success: function (response) {
-                    console.log(response);
-                    loadNinjas();
-                }
-            });
+            editNinja(id, loadNinjas);
         } else {
-            $.ajax({
-                type: "POST",
-                url: '/ninjas',
-                dataType: 'json',
-                contentType: 'application/json',
-                data: JSON.stringify(data),
-                success: function (response) {
-                    console.log(response);
-                    loadNinjas();
-                }
-            });
+            saveNinja(id, loadNinjas);
         }
         return false;
     });
@@ -201,13 +158,7 @@ $(document).ready(function () {
     $('#ninja-detail-delete-btn').click(function() {
         var id = $('#ninja-detail-id').text();
         if (confirm("Delete?")) {
-            $.ajax({
-                type: "DELETE",
-                url: '/ninjas/' + id,
-                success: function () {
-                    loadNinjas();
-                }
-            });
+            deleteNinjas(id, loadNinjas);
         }
     });
 
@@ -250,18 +201,13 @@ $(document).ready(function () {
         var data = {
             name: $('#mooc-form-name').val(),
             desc: $('#mooc-form-desc').val(),
-            points: parseInt($('#mooc-form-points').val())
+            points: parseInt($('#mooc-form-points').val()),
+            ninja_id: parseInt(id)
         }
-        $.ajax({
-            type: "POST",
-            url: '/ninjas/' + id + "/moocs",
-            dataType: 'json',
-            contentType: 'application/json',
-            data: JSON.stringify(data),
-            success: function (response) {
-                showNinjaDetail(id);
-            }
+        saveMooc(data, function() {
+            showNinjaDetail(id);
         });
+        return false;
     });
 
     loadNinjas();
