@@ -28,6 +28,9 @@
 </div>
 <div class="container header">
     <h1>Hello Ninja GAE</h1>
+    <a id="menu-list">All ninjas</a>
+    <a id="menu-ranking">Ranking</a>
+    <a id="menu-add">Add ninja</a>
 </div>
 
 <div class="container loading" style="display: none;">
@@ -42,10 +45,6 @@
             <input type="text" name="ninja_filter" id="department" class="form-control"/>
             <button id="search-btn" class="btn btn-info">Search</button>
         </div>
-        <a id="add-ninja-btn" class="btn btn-success">
-            <i class="glyphicon glyphicon-plus"></i>
-            Ninja
-        </a>
     </div>
 
     <table class="table">
@@ -63,6 +62,27 @@
     </table>
 
     <div id="ninja-list-empty" class="container" style="display: none;">
+        <h3>No Ninjas found</h3>
+    </div>
+</div>
+
+<div id="ninja-ranking" class="container" style="display: none;">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Department</th>
+            <th scope="col">Building</th>
+            <th scope="col">Points</th>
+        </tr>
+        </thead>
+        <tbody id="ninja-ranking-content">
+        </tbody>
+    </table>
+
+    <div id="ninja-ranking-empty" class="container" style="display: none;">
         <h3>No Ninjas found</h3>
     </div>
 </div>
@@ -92,6 +112,7 @@
             <th scope="col">Description</th>
             <th scope="col">Points</th>
             <th scope="col">Date</th>
+            <th scope="col"></th>
             <th scope="col"></th>
         </tr>
         </thead>
@@ -171,6 +192,15 @@
                     <div class="form-group">
                         <label for="points">Points</label>
                         <input type="number" name="points" id="mooc-form-points" class="form-control"/>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="certification">Certification</label>
+                        <input type="file" name="certification" id="add-mooc-file" accept="application/pdf" style="display: none;"/>
+                        <a id="select-file" class="btn btn-info">Select file</a>
+                        <span id="mooc-file-name"></span>
                     </div>
                 </div>
             </div>

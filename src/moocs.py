@@ -7,6 +7,7 @@
 
 import logging
 import re
+import time
 
 import webapp2
 
@@ -42,7 +43,16 @@ class Moocs(webapp2.RequestHandler):
         mooc.name = data['name']
         mooc.desc = data['desc']
         mooc.points = data['points']
-        key = mooc.put()
+
+        # Comprobamos si ha seleccionado algún archivo
+        if 'file' in data:
+            file_data = data['file']
+            # Guardamos fichero en GCS
+            mime, data = re.match('data:(.*);base64,(.*)', file_data).groups()
+            mooc.file = storage_handler.upload_base64_file(data, mime, "%s_%d" % (mooc.ninja_id, int(time.time())))
+            mooc.put()
+
+        mooc.put()
         logging.info('WNP: Mooc %s almacenado correctamente en namespace %s', mooc.name, namespace_handler.get_name_ns())
 
     def create(self):

@@ -21,7 +21,7 @@ function getNinja(id, callback) {
     });
 }
 
-function saveNinja(id, callback) {
+function saveNinja(data, callback) {
     $.ajax({
         type: "POST",
         url: '/ninjas',
@@ -35,7 +35,7 @@ function saveNinja(id, callback) {
     });
 }
 
-function editNinja(id, callback) {
+function editNinja(id, data, callback) {
     $.ajax({
         type: "PUT",
         url: '/ninjas/' + id,
@@ -62,7 +62,7 @@ function deleteNinja(id, callback) {
 function listMoocs(ninja_id, callback) {
     $.ajax({
         type: "GET",
-        url: '/moocs?ninja_id' + ninja_id,
+        url: '/moocs?ninja_id=' + ninja_id,
         success: function (response) {
             console.log(response);
             callback(response);
@@ -90,6 +90,19 @@ function deleteMooc(id, callback) {
         url: '/moocs/' + id,
         success: function () {
             callback();
+        }
+    });
+}
+
+function listRanking(callback) {
+    $.ajax({
+        type: "GET",
+        url: '/ranking',
+        dataType: 'json',
+        contentType: 'application/json',
+        success: function (response) {
+            console.log(response);
+            callback(response);
         }
     });
 }

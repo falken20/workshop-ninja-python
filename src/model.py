@@ -27,5 +27,6 @@ class Mooc(ndb.Model):
     desc = ndb.StringProperty(required=True, indexed=False)
     points = ndb.IntegerProperty(required=True, indexed=False)
     date = ndb.DateTimeProperty(auto_now=True, indexed=True)
+    file = ndb.StringProperty(required=False, indexed=False)
 # [END ndb class]
 
