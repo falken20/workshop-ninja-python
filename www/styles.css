@@ -24,6 +24,18 @@ td {
     height: 240px;
 }
 
+.menu {
+    display: flex;
+    height: 130px;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+.menu > a {
+    font-size: 20px;
+    margin: 0px 10px;
+}
+
 .img-small {
     width: 40px;
     height: 40px;
@@ -35,6 +47,12 @@ td {
     display: flex;
     justify-content: space-between;
 }
+
+.form-column {
+    display: flex;
+    flex-direction: column;
+}
+
 .form-row > button {
     margin-right: 10px;
 }
@@ -67,7 +85,15 @@ td {
     flex-direction: column;
 }
 
-#ninja-list-empty {
+#ninja-detail-name {
+    margin-right: 20px;
+}
+
+#ninja-detail-edit-btn {
+    margin-right: 20px;
+}
+
+.list-ninja-empty {
     display: flex;
     justify-content: center;
 }

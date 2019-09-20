@@ -77,12 +77,16 @@ $(document).ready(function () {
         $('#ninja-ranking-content').empty();
         list.forEach(function (i) {
             $('#ninja-ranking-content').append(row(
+                hidden(i._id) +
                 column(image(i.image)) +
                 column(i.name) +
                 column(i.email) +
                 column(i.department) +
                 column(i.building) +
                 column(i.points), "ninja"));
+        });
+        $('.ninja').click(function (e) {
+            showNinjaDetail($(e.target).parents('tr').find('input[type="hidden"]').val())
         });
     }
 
@@ -128,6 +132,7 @@ $(document).ready(function () {
         $('form').trigger("reset");
         $('#add-ninja-form-image').val(undefined);
         $('#add-ninja-form-id').val(undefined);
+        $('#ninja-image').prop('src', 'resources/ninja.svg');
         if (id) {
             getNinja(id, function(data) {
                 $('#add-ninja-form-id').val(data._id);
@@ -143,26 +148,30 @@ $(document).ready(function () {
     }
 
     $('#add-ninja-submit').click(function () {
-        var data = {
-            name: $('#add-ninja-form-name').val(),
-            email: $('#add-ninja-form-email').val(),
-            department: $('#add-ninja-form-department').val(),
-            building: $('#add-ninja-form-building').val(),
-            image: $('#ninja-image').prop('src')
-        };
+        if (ninjaform.checkValidity()) {
+            var data = {
+                name: $('#add-ninja-form-name').val(),
+                email: $('#add-ninja-form-email').val(),
+                department: $('#add-ninja-form-department').val(),
+                building: $('#add-ninja-form-building').val(),
+                image: $('#ninja-image').prop('src')
+            };
 
-        var id = $('#add-ninja-form-id').val();
+            var id = $('#add-ninja-form-id').val();
 
-        if (data.image.indexOf("resources/ninja.svg") !== -1) {
-            data.image = ""
-        } else if (!data.image.startsWith("data:image")) {
-            delete data.image
-        }
+            if (data.image.indexOf("resources/ninja.svg") !== -1) {
+                data.image = ""
+            } else if (!data.image.startsWith("data:image")) {
+                delete data.image
+            }
 
-        if (id) {
-            editNinja(id, data, loadNinjas);
+            if (id) {
+                editNinja(id, data, loadNinjas);
+            } else {
+                saveNinja(data, loadNinjas);
+            }
         } else {
-            saveNinja(data, loadNinjas);
+            console.log("Invalid form");
         }
         return false;
     });
@@ -171,11 +180,6 @@ $(document).ready(function () {
         $('#add-ninja-form').hide();
         loadNinjas();
         return false;
-    });
-
-    $('#ninja-detail-back-btn').click(function () {
-        $('#add-ninja-form').hide();
-        loadNinjas();
     });
 
     $('#ninja-detail-edit-btn').click(function() {
@@ -216,12 +220,15 @@ $(document).ready(function () {
 
     $('#ninja-detail-add-mooc-btn').click(function() {
         setView('mooc-form');
+        $('form').trigger("reset");
+        $('#mooc-file-name').text("");
         $('#mooc-form-ninja-id').text($('#ninja-detail-id').text());
     });
 
     $('#mooc-form-cancel').click(function() {
         var id = $('#mooc-form-ninja-id').text();
         showNinjaDetail(id);
+        return false;
     });
 
     function readMoocFile(callback) {
@@ -238,19 +245,23 @@ $(document).ready(function () {
     }
 
     $('#mooc-form-submit').click(function() {
-        readMoocFile(function(file) {
-            var id = $('#mooc-form-ninja-id').text();
-            var data = {
-                name: $('#mooc-form-name').val(),
-                desc: $('#mooc-form-desc').val(),
-                points: parseInt($('#mooc-form-points').val()),
-                ninja_id: parseInt(id),
-                file: file
-            };
-            saveMooc(data, function() {
-                showNinjaDetail(id);
+        if (moocform.checkValidity()) {
+            readMoocFile(function (file) {
+                var id = $('#mooc-form-ninja-id').text();
+                var data = {
+                    name: $('#mooc-form-name').val(),
+                    desc: $('#mooc-form-desc').val(),
+                    points: parseInt($('#mooc-form-points').val()),
+                    ninja_id: parseInt(id),
+                    file: file
+                };
+                saveMooc(data, function () {
+                    showNinjaDetail(id);
+                });
             });
-        });
+        } else {
+            console.log("Invalid form");
+        }
         return false;
     });
 

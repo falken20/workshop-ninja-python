@@ -8,6 +8,8 @@
 import logging
 import re
 
+from google.appengine.ext import ndb
+
 import webapp2
 
 from src import model
@@ -41,8 +43,6 @@ class Ninjas(webapp2.RequestHandler):
         ninja.building = data['building']
         ninja.department = data['department']
 
-        key = ninja.put()
-
         # Comprobamos si ha seleccionado algún archivo
         if 'image' in data:
             image_data = data['image']
@@ -51,12 +51,13 @@ class Ninjas(webapp2.RequestHandler):
                 # Contenido: 'data:image/png;base64,iVBORw...'
                 # Extraer tipo mime de la imagen y datos en base 64
                 mime, data = re.match('data:(.*);base64,(.*)', image_data).groups()
-                ninja.image = storage_handler.upload_base64_file(data, mime, str(key.id()))
+                ninja.image = storage_handler.upload_base64_file(data, mime, str(ninja.key.id()))
             else:
                 # Borramos imagen en GCS
-                storage_handler.delete_file(str(key.id()))
+                storage_handler.delete_file(str(ninja.key.id()))
                 ninja.image = None
-            ninja.put()
+
+        ninja.put()
 
         logging.info('WNP: Ninja %s almacenado correctamente en namespace %s', ninja.email, namespace_handler.get_name_ns())
 
@@ -66,6 +67,8 @@ class Ninjas(webapp2.RequestHandler):
             send(self, 400) # Bad Request
         else:
             ninja = model.Ninja()
+            first, last = model.Ninja.allocate_ids(1)
+            ninja.key = ndb.Key(model.Ninja, first)
             try:
                 Ninjas.save_ninja(ninja, ninja_data)
             except KeyError as e:

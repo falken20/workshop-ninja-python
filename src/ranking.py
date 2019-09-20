@@ -18,6 +18,7 @@ class Ranking(webapp2.RequestHandler):
 
     def ninja_info(self, ranking, ninja):
         if ninja is not None:
+            ranking['_id'] = ninja.key.id()
             ranking['name'] = ninja.name
             ranking['department'] = ninja.department
             ranking['email'] = ninja.email

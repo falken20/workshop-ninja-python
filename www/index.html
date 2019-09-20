@@ -28,9 +28,11 @@
 </div>
 <div class="container header">
     <h1>Hello Ninja GAE</h1>
-    <a id="menu-list">All ninjas</a>
-    <a id="menu-ranking">Ranking</a>
-    <a id="menu-add">Add ninja</a>
+    <div class="menu">
+        <a id="menu-list">All ninjas</a>
+        <a id="menu-ranking">Ranking</a>
+        <a id="menu-add">Add ninja</a>
+    </div>
 </div>
 
 <div class="container loading" style="display: none;">
@@ -61,7 +63,7 @@
         </tbody>
     </table>
 
-    <div id="ninja-list-empty" class="container" style="display: none;">
+    <div id="ninja-list-empty" class="container list-ninja-empty" style="display: none;">
         <h3>No Ninjas found</h3>
     </div>
 </div>
@@ -82,7 +84,7 @@
         </tbody>
     </table>
 
-    <div id="ninja-ranking-empty" class="container" style="display: none;">
+    <div id="ninja-ranking-empty" class="container list-ninja-empty" style="display: none;">
         <h3>No Ninjas found</h3>
     </div>
 </div>
@@ -95,11 +97,10 @@
                 <h2 id="ninja-detail-name"></h2>
                 <span>(</span><h5 id="ninja-detail-id"></h5><span>)</span>
             </div>
-            <h4 id="ninja-detail-email"></h4>
-            <h4 id="ninja-detail-department"></h4>
-            <h4 id="ninja-detail-building"></h4>
+            <h5 id="ninja-detail-email"></h5>
+            <h5 id="ninja-detail-department"></h5>
+            <h5 id="ninja-detail-building"></h5>
         </div>
-        <button id="ninja-detail-back-btn" class="btn btn-info">Back</button>
     </div>
     <div style="display: flex; flex-direction: row; justify-content: flex-end;">
         <button id="ninja-detail-edit-btn" class="btn btn-info">Edit</button>
@@ -123,7 +124,7 @@
 </div>
 
 <div id="add-ninja-form" class="container" style="display: none;">
-    <form>
+    <form id="ninjaform">
         <input type="hidden" id="add-ninja-form-id"/>
         <div style="display: flex;">
             <div>
@@ -134,31 +135,31 @@
                 <div class="form-row form-row-left">
                     <button id="select-image" class="btn btn-info">Select image</button>
                     <button id="clear-image" class="btn btn-info">Delete image</button>
-                    <input type="file" name="image" id="add-ninja-form-image" style="display: none;"/>
+                    <input type="file" name="image" id="add-ninja-form-image" style="display: none;" accept="image/jpeg"/>
                 </div>
             </div>
             <div style="flex-grow: 1; margin-top: 30px; margin-left: 30px;">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" name="name" id="add-ninja-form-name" class="form-control"/>
+                        <input type="text" name="name" required id="add-ninja-form-name" class="form-control"/>
                     </div>
 
                     <div class="form-group">
                         <label for="name">Email</label>
-                        <input type="text" name="email" id="add-ninja-form-email" class="form-control"/>
+                        <input type="text" name="email" required id="add-ninja-form-email" class="form-control"/>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="department">Department</label>
-                        <input type="text" name="department" id="add-ninja-form-department" class="form-control"/>
+                        <input type="text" name="department" required id="add-ninja-form-department" class="form-control"/>
                     </div>
 
                     <div class="form-group">
                         <label for="building">Building</label>
-                        <input type="text" name="building" id="add-ninja-form-building" class="form-control"/>
+                        <input type="text" name="building" required id="add-ninja-form-building" class="form-control"/>
                     </div>
                 </div>
 
@@ -172,26 +173,26 @@
 </div>
 
 <div  id="mooc-form" class="container" style="display: none;">
-    <form>
+    <form id="moocform">
         <input type="hidden" id="mooc-form-ninja-id"/>
         <div style="display: flex;">
             <div style="flex-grow: 1; margin-top: 30px; margin-left: 30px;">
-                <div class="form-row">
+                <div class="form-column">
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" name="name" id="mooc-form-name" class="form-control"/>
+                        <input type="text" name="name" required id="mooc-form-name" class="form-control"/>
                     </div>
 
                     <div class="form-group">
                         <label for="desc">Description</label>
-                        <input type="text" name="desc" id="mooc-form-desc" class="form-control"/>
+                        <input type="text" name="desc" required id="mooc-form-desc" class="form-control"/>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="points">Points</label>
-                        <input type="number" name="points" id="mooc-form-points" class="form-control"/>
+                        <input type="number" name="points" required id="mooc-form-points" class="form-control"/>
                     </div>
                 </div>
 
@@ -199,10 +200,16 @@
                     <div class="form-group">
                         <label for="certification">Certification</label>
                         <input type="file" name="certification" id="add-mooc-file" accept="application/pdf" style="display: none;"/>
+                    </div>
+                </div>
+
+                 <div class="form-row">
+                    <div class="form-group">
                         <a id="select-file" class="btn btn-info">Select file</a>
                         <span id="mooc-file-name"></span>
                     </div>
                 </div>
+
             </div>
         </div>
         <div class="form-submit">
