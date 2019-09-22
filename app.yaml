@@ -2,7 +2,7 @@ runtime: python27
 api_version: 1
 threadsafe: true
 # TODO: Indicar aquí el UID del usuario en minúscula
-service: <uid>
+service: u102105
 
 # [START handlers]
 handlers:
