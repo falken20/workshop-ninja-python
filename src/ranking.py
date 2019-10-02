@@ -6,6 +6,7 @@
 # Workshop Ninja Python
 
 import webapp2
+import logging
 from itertools import groupby
 from google.appengine.ext import ndb
 
@@ -29,7 +30,7 @@ class Ranking(webapp2.RequestHandler):
         return sum(m.points for m in moocs)
 
     def ranking(self):
-        moocs = model.Mooc.query().fetch()
+        moocs = model.Mooc.query().order(model.Mooc.ninja_id).fetch()
 
         # Solution 1
         ranking = sorted([

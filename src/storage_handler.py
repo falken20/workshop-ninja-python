@@ -43,7 +43,7 @@ def upload_base64_file(data, mime, filename):
     """
     Sube un archivo a GCS a partir del base 64 y devuelve la url publica
     """
-    logging.info('WNP: Creando fichero %s a partir de base 64 en GCS', filename)
+    logging.info('WNP: Creando fichero %s a partir de base 64 en GCS bucket: %s', filename, config.CLOUD_STORAGE_BUCKET)
     bucket_name = config.CLOUD_STORAGE_BUCKET
     client = _get_storage_client()
     bucket = client.bucket(bucket_name)
@@ -64,10 +64,10 @@ def delete_file(filename):
         blob = bucket.blob(filename)
         blob.delete()
     except exceptions.NotFound:
-        logging.warning('WPN: No se ha podido localizar el archivo %s en GSC', filename)
+        logging.warning('WNP: No se ha podido localizar el archivo %s en GSC', filename)
 
     except Exception as e:
-        logging.error('WPN: Unexpected error: %s', e)
+        logging.error('WNP: Unexpected error: %s', e)
 
 
 def upload_file(file_stream, folder, filename, content_type):
@@ -96,7 +96,7 @@ def upload_file(file_stream, folder, filename, content_type):
         return filename, blob.public_url
 
     except (BadRequest, Exception) as e:
-        logging.error('WPN: Error en fichero %s al subirlo en GCS: %s', filename, e)
+        logging.error('WNP: Error en fichero %s al subirlo en GCS: %s', filename, e)
         return None, None
 
 
