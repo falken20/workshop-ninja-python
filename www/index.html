@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>Hello Ninja GAE!!</title>
+    <meta charset="utf-8">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+    <script src="app.js"></script>
+    <script src="api.js"></script>
+    <script src="utils.js"></script>
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="bg-default">
+<div class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <a href="/">
+                <img src="https://www.theninjaproject.bbva/assets/vectors/ninja/logo.svg"
+                     style="height: 58px; width: 160px" alt="Logo" class="default-logo">
+            </a>
+        </div>
+    </div>
+</div>
+<div class="container header">
+    <h1>Hello Ninja GAE</h1>
+    <div class="menu">
+        <a id="menu-list">All ninjas</a>
+        <a id="menu-ranking">Ranking</a>
+        <a id="menu-add">Add ninja</a>
+    </div>
+</div>
+
+<div class="container loading" style="display: none;">
+    <img src="resources/loading.svg">
+</div>
+
+
+<div id="ninja-list" class="container" style="display: none;">
+    <div class="ninja-list-header">
+        <div class="ninja-search">
+            <label for="ninja_filter">Department</label>
+            <input type="text" name="ninja_filter" id="department" class="form-control"/>
+            <button id="search-btn" class="btn btn-info">Search</button>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Department</th>
+            <th scope="col">Building</th>
+        </tr>
+        </thead>
+        <tbody id="ninja-list-content">
+        </tbody>
+    </table>
+
+    <div id="ninja-list-empty" class="container list-ninja-empty" style="display: none;">
+        <h3>No Ninjas found</h3>
+    </div>
+</div>
+
+<div id="ninja-ranking" class="container" style="display: none;">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Department</th>
+            <th scope="col">Building</th>
+            <th scope="col">Points</th>
+        </tr>
+        </thead>
+        <tbody id="ninja-ranking-content">
+        </tbody>
+    </table>
+
+    <div id="ninja-ranking-empty" class="container list-ninja-empty" style="display: none;">
+        <h3>No Ninjas found</h3>
+    </div>
+</div>
+
+<div id="ninja-detail" class="container" style="display: none;">
+    <div style="display: flex; flex-direction: row; align-items: flex-start;">
+        <img id="ninja-detail-image" class="ninja-image" src="resources/ninja.svg">
+        <div style="display: flex; flex-direction: column; flex-grow: 1;">
+            <div style="display: flex; flex-direction: row; align-items: baseline">
+                <h2 id="ninja-detail-name"></h2>
+                <span>(</span><h5 id="ninja-detail-id"></h5><span>)</span>
+            </div>
+            <h5 id="ninja-detail-email"></h5>
+            <h5 id="ninja-detail-department"></h5>
+            <h5 id="ninja-detail-building"></h5>
+        </div>
+    </div>
+    <div style="display: flex; flex-direction: row; justify-content: flex-end;">
+        <button id="ninja-detail-edit-btn" class="btn btn-info">Edit</button>
+        <button id="ninja-detail-delete-btn" class="btn btn-info">Delete</button>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Points</th>
+            <th scope="col">Date</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody id="ninja-detail-list-content">
+        </tbody>
+    </table>
+    <button id="ninja-detail-add-mooc-btn" class="btn btn-info">Add MOOC</button>
+</div>
+
+<div id="add-ninja-form" class="container" style="display: none;">
+    <form id="ninjaform">
+        <input type="hidden" id="add-ninja-form-id"/>
+        <div style="display: flex;">
+            <div>
+                <div class="form-row form-row-left">
+                    <img id="ninja-image" class="ninja-image" src="resources/ninja.svg">
+                </div>
+
+                <div class="form-row form-row-left">
+                    <button id="select-image" class="btn btn-info">Select image</button>
+                    <button id="clear-image" class="btn btn-info">Delete image</button>
+                    <input type="file" name="image" id="add-ninja-form-image" style="display: none;" accept="image/jpeg"/>
+                </div>
+            </div>
+            <div style="flex-grow: 1; margin-top: 30px; margin-left: 30px;">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" name="name" required id="add-ninja-form-name" class="form-control"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name">Email</label>
+                        <input type="text" name="email" required id="add-ninja-form-email" class="form-control"/>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="department">Department</label>
+                        <input type="text" name="department" required id="add-ninja-form-department" class="form-control"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="building">Building</label>
+                        <input type="text" name="building" required id="add-ninja-form-building" class="form-control"/>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="form-submit">
+            <button id="add-ninja-submit" class="btn btn-success">Save</button>
+            <button id="add-ninja-cancel" class="btn btn-info">Cancel</button>
+        </div>
+    </form>
+</div>
+
+<div  id="mooc-form" class="container" style="display: none;">
+    <form id="moocform">
+        <input type="hidden" id="mooc-form-ninja-id"/>
+        <div style="display: flex;">
+            <div style="flex-grow: 1; margin-top: 30px; margin-left: 30px;">
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" name="name" required id="mooc-form-name" class="form-control"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="desc">Description</label>
+                        <input type="text" name="desc" required id="mooc-form-desc" class="form-control"/>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="points">Points</label>
+                        <input type="number" name="points" required id="mooc-form-points" class="form-control"/>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="certification">Certification</label>
+                        <input type="file" name="certification" id="add-mooc-file" accept="application/pdf" style="display: none;"/>
+                    </div>
+                </div>
+
+                 <div class="form-row">
+                    <div class="form-group">
+                        <a id="select-file" class="btn btn-info">Select file</a>
+                        <span id="mooc-file-name"></span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="form-submit">
+            <button id="mooc-form-submit" class="btn btn-success">Save</button>
+            <button id="mooc-form-cancel" class="btn btn-info">Cancel</button>
+        </div>
+    </form>
+</div>
+
+
+</body>
+</html>

@@ -5,7 +5,6 @@
 #
 # Workshop Ninja Python
 
-import os
 from google.appengine.api.modules import modules
 
 
@@ -13,7 +12,7 @@ from google.appengine.api.modules import modules
 PROJECT_ID = 'dev-bbva-gae-cicd'
 
 # Establecemos el nombre del bucket asi como extensiones permitidas
-CLOUD_STORAGE_BUCKET = 'bucket-ninja-ws'
+CLOUD_STORAGE_BUCKET = modules.get_current_module_name()
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 # El nombre de namespace se toma del nombre del servicio desplegado

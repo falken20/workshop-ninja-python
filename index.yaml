@@ -16,4 +16,12 @@ indexes:
   - name: date
     direction: desc
 
+- kind: Mooc
+  ancestor: no
+  properties:
+  - name: ninja_id
+    direction: asc
+  - name: date
+    direction: asc
+
 # TODO: Crear nuevo indice para cambiar búsqueda por Building y date ascendente

@@ -1,0 +1,131 @@
+.bg-default {
+    background: url(resources/background.svg) repeat-x transparent;
+    background-position-x: 45%;
+    background-position-y: 50px;
+    background-size: auto;
+    background-origin: initial;
+    background-clip: initial;
+    background-color: #4e8072;
+}
+
+label, h1, h2, h3, h4, h5, h6, td, th, span, a {
+    color: white !important;
+}
+
+a {
+    cursor: pointer;
+}
+
+td {
+    vertical-align: middle !important;
+}
+
+.header {
+    height: 240px;
+}
+
+.menu {
+    display: flex;
+    height: 130px;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+.menu > a {
+    font-size: 20px;
+    margin: 0px 10px;
+}
+
+.img-small {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+.form-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-row > button {
+    margin-right: 10px;
+}
+.form-row-left {
+    justify-content: flex-start;
+}
+.form-group {
+    display: inline-block;
+    flex-grow: 0.48;
+}
+.form-submit {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.ninja-image {
+    width: 174px;
+    height: 174px;
+    object-fit: cover;
+    border-radius: 100px;
+    margin: 20px;
+}
+
+.ninja {
+    cursor: pointer;
+}
+
+#ninja-list {
+    display: flex;
+    flex-direction: column;
+}
+
+#ninja-detail-name {
+    margin-right: 20px;
+}
+
+#ninja-detail-edit-btn {
+    margin-right: 20px;
+}
+
+.list-ninja-empty {
+    display: flex;
+    justify-content: center;
+}
+
+.ninja-list-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.ninja-search {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    align-items: center;
+}
+
+.ninja-search > * {
+    margin-right: 10px;
+}
+
+.ninja-search > input {
+    max-width: 300px;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+}
+
+.form-submit > *{
+    margin-right: 10px;
+}
