@@ -30,6 +30,7 @@ class Ranking(webapp2.RequestHandler):
         return sum(m.points for m in moocs)
 
     def ranking(self):
+        # Obtengo todos los moocs pero ordenados por el ID del ninja
         moocs = model.Mooc.query().order(model.Mooc.ninja_id).fetch()
 
         # Solution 1

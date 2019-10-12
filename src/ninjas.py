@@ -38,6 +38,7 @@ class Ninjas(webapp2.RequestHandler):
 
     @staticmethod
     def save_ninja(ninja, data):
+        # Asignamos los valores recogidos
         ninja.name = data['name']
         ninja.email = data['email']
         ninja.building = data['building']
@@ -57,17 +58,22 @@ class Ninjas(webapp2.RequestHandler):
                 storage_handler.delete_file(str(ninja.key.id()))
                 ninja.image = None
 
+        # Almacenamos el objeto ninja
         ninja.put()
 
         logging.info('WNP: Ninja %s almacenado correctamente en namespace %s', ninja.email, namespace_handler.get_name_ns())
 
     def create(self):
+        # Recogemos los campos introducidos por el usuario
         ninja_data = read_body(self)
         if ninja_data is None:
             send(self, 400) # Bad Request
         else:
+            # Creamos un objeto ninja a partir de la clase Ninja(model.py), en él guardaremos los campos del formulario
             ninja = model.Ninja()
+            # Asignamos y reservamos un id
             first, last = model.Ninja.allocate_ids(1)
+            # Generamos una clave única a partir del id
             ninja.key = ndb.Key(model.Ninja, first)
             try:
                 Ninjas.save_ninja(ninja, ninja_data)
@@ -78,10 +84,12 @@ class Ninjas(webapp2.RequestHandler):
             send(self, 201, ninja)
 
     def update(self, ninja_id):
+        # Obtenemos el ninja a modificar a partir de su ID
         ninja = model.Ninja.get_by_id(int(ninja_id))
         if ninja is None:
             send(self, 404)
         else:
+            # Recogemos los campos introducidos por el usuario
             ninja_data = read_body(self)
             if ninja_data is None:
                 send(self, 400)  # Bad Request
@@ -95,6 +103,7 @@ class Ninjas(webapp2.RequestHandler):
                 send(self, 200, ninja)
 
     def delete(self, ninja_id):
+        # Obtenemos el ninja a eliminar a partir de su ID
         ninja = model.Ninja.get_by_id(int(ninja_id))
         if ninja is None:
             send(self, 404)

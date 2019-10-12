@@ -23,6 +23,7 @@ from google.appengine.ext.db import BadValueError
 class Moocs(webapp2.RequestHandler):
 
     def list(self):
+        # A partir del ninja_id obtenemos todos sus moocs
         ninja_id = self.request.get('ninja_id', default_value=None)
         if ninja_id is None:
             moocs = model.Mooc.query().order(model.Mooc.date).fetch()
@@ -31,6 +32,7 @@ class Moocs(webapp2.RequestHandler):
         send(self, 200, moocs)
 
     def retrieve(self, mooc_id):
+        # En este metodo recuperamos un determinado mooc a partir de su mooc_id
         mooc = model.Mooc.get_by_id(int(mooc_id))
         if mooc is None:
             send(self, 404)
@@ -56,6 +58,7 @@ class Moocs(webapp2.RequestHandler):
         logging.info('WNP: Mooc %s almacenado correctamente en namespace %s', mooc.name, namespace_handler.get_name_ns())
 
     def create(self):
+        # Se ejecuta al guardar los datos de un mooc en su mantenimiento
         mooc_data = read_body(self)
         if mooc_data is None:
             send(self, 400)  # Bad Request
@@ -78,6 +81,7 @@ class Moocs(webapp2.RequestHandler):
                 send(self, 201, mooc)
 
     def delete(self, mooc_id):
+        # Elimina un determinado mooc
         mooc = model.Mooc.get_by_id(int(mooc_id))
         if mooc is None:
             send(self, 404)

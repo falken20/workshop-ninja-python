@@ -43,8 +43,9 @@ else:
 if config.CLOUD_STORAGE_BUCKET:
     logging.info('WNP: BUCKET --> %s', config.CLOUD_STORAGE_BUCKET)
 else:
-    logging.info('WNP: BUCKET --> default')
+    logging.error('WNP: BUCKET --> no definido')
 
+# TODO:
 # Esta función sólo es llamada cuando no se asigna un namespace
 def namespace_manager_default_namespace_for_request():
     return config.NAME_SPACE
