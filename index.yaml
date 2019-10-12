@@ -24,4 +24,4 @@ indexes:
   - name: date
     direction: asc
 
-# TODO: Crear nuevo indice para cambiar búsqueda por Building y date ascendente
+# TODO: Crear nuevo indice en entidad Ninja para poder buscar por edificio y fecha de manera ascendente

@@ -21,12 +21,12 @@ td {
 }
 
 .header {
-    height: 240px;
+    height: 150px;
 }
 
 .menu {
     display: flex;
-    height: 130px;
+    height: 60px;
     justify-content: flex-end;
     align-items: flex-end;
 }
