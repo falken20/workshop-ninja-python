@@ -22,7 +22,7 @@ from src.utils import send, read_body
 class Ninjas(webapp2.RequestHandler):
 
     def list(self):
-        # TODO: Incluir traza de log indicando que has accedido al metodo
+        # TODO 06: Incluir traza de log indicando que has accedido al metodo
         department = self.request.get('department', default_value=None)
         # TODO: Modificar para incluir el poder filtrar por departamento
         if department is None:
@@ -69,7 +69,7 @@ class Ninjas(webapp2.RequestHandler):
     def create(self):
         # Recogemos los campos introducidos por el usuario
         ninja_data = read_body(self)
-        # TODO: Mostrar en logs el contenido de la variable ninja_data
+        # TODO 07: Mostrar en logs el contenido de la variable ninja_data
         if ninja_data is None:
             send(self, 400) # Bad Request
         else:

@@ -11,9 +11,8 @@ from google.appengine.api import modules
 # Asignamos a la variable el ID del proyecto
 PROJECT_ID = 'dev-bbva-gae-cicd'
 
-# TODO:
 # Establecemos el nombre del bucket asi como extensiones permitidas
-CLOUD_STORAGE_BUCKET = modules.get_current_module_name()
+# TODO 02: Crear variable CLOUD_STORAGE_BUCKET para asignar como nombre del bucket el del servicio
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 # El nombre de namespace se toma del nombre del servicio desplegado
