@@ -24,7 +24,6 @@ vendor.add('lib')
 
 
 # Mostramos en logs algunas variables de entorno
-# logging.info('WNP: OS VALUE --> %s', format(os.environ.viewvalues()))
 logging.info('WNP: SERVER_NAME --> %s', format(os.environ.get('SERVER_NAME', '')))
 
 # Mostramos en logs el usuario conectado
