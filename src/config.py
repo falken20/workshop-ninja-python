@@ -5,7 +5,7 @@
 #
 # Workshop Ninja Python
 
-from google.appengine.api.modules import modules
+from google.appengine.api import modules
 
 
 # Asignamos a la variable el ID del proyecto
