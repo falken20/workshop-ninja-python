@@ -44,7 +44,6 @@ if config.CLOUD_STORAGE_BUCKET:
 else:
     logging.error('WNP: BUCKET --> no definido')
 
-# TODO:
 # Esta función sólo es llamada cuando no se asigna un namespace
 def namespace_manager_default_namespace_for_request():
-    return config.NAME_SPACE
+    # TODO 03: Incluir comando para que devuelva variable definida en config.py que contiene el nombre del name space
