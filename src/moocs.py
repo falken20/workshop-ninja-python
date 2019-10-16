@@ -23,12 +23,8 @@ from google.appengine.ext.db import BadValueError
 class Moocs(webapp2.RequestHandler):
 
     def list(self):
-        # A partir del ninja_id obtenemos todos sus moocs
-        ninja_id = self.request.get('ninja_id', default_value=None)
-        if ninja_id is None:
-            moocs = model.Mooc.query().order(model.Mooc.date).fetch()
-        else:
-            moocs = model.Mooc.query(model.Mooc.ninja_id == int(ninja_id)).order(model.Mooc.date).fetch()
+        # TODO 12: Obtener los moocs de un determinado ninja que podemos obtener de variable 'ninja_id' de la request
+        # Mostrar los moocs ordenados por model.Mooc.date
         send(self, 200, moocs)
 
     def retrieve(self, mooc_id):
