@@ -46,7 +46,6 @@ class Ninjas(webapp2.RequestHandler):
         ninja.email = data['email']
         ninja.department = data['department']
         # TODO 08: Asigna el edificio introducido en el formulario
-        ninja.building = data['building']
 
         # Comprobamos si ha seleccionado algún archivo
         if 'image' in data:
