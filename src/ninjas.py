@@ -24,7 +24,7 @@ class Ninjas(webapp2.RequestHandler):
     def list(self):
         # TODO 06: Incluir traza de log indicando que has accedido al metodo
         department = self.request.get('department', default_value=None)
-        # TODO: Modificar para incluir el poder filtrar por departamento
+        # TODO 09: Modificar para incluir el poder filtrar por departamento
         if department is None:
             ninjas = model.Ninja.query().order(model.Ninja.name).fetch()
         else:
@@ -32,7 +32,8 @@ class Ninjas(webapp2.RequestHandler):
         send(self, 200, ninjas)
 
     def retrieve(self, ninja_id):
-        ninja = model.Ninja.get_by_id(int(ninja_id))
+        # TODO 10: Obtener los datos del ninja que nos llega como parametro consultando en model.Ninja
+        # asignandolo a un objeto llamado ninja que será el que luego se use en la sentencia if
         if ninja is None:
             send(self, 404)
         else:
@@ -44,7 +45,7 @@ class Ninjas(webapp2.RequestHandler):
         ninja.name = data['name']
         ninja.email = data['email']
         ninja.department = data['department']
-        # TODO: Asigna el edificio introducido en el formulario
+        # TODO 08: Asigna el edificio introducido en el formulario
         ninja.building = data['building']
 
         # Comprobamos si ha seleccionado algún archivo
@@ -64,7 +65,8 @@ class Ninjas(webapp2.RequestHandler):
         # Almacenamos el objeto ninja
         ninja.put()
 
-        d
+        logging.info('WNP: Ninja %s almacenado correctamente en namespace %s', ninja.email, namespace_handler.get_name_ns())
+
 
     def create(self):
         # Recogemos los campos introducidos por el usuario
@@ -88,8 +90,7 @@ class Ninjas(webapp2.RequestHandler):
             send(self, 201, ninja)
 
     def update(self, ninja_id):
-        # Obtenemos el ninja a modificar a partir de su ID
-        ninja = model.Ninja.get_by_id(int(ninja_id))
+        # TODO 12: Obtenemos el ninja a modificar a partir de su ID
         if ninja is None:
             send(self, 404)
         else:
@@ -107,11 +108,9 @@ class Ninjas(webapp2.RequestHandler):
                 send(self, 200, ninja)
 
     def delete(self, ninja_id):
-        # Obtenemos el ninja a eliminar a partir de su ID
-        ninja = model.Ninja.get_by_id(int(ninja_id))
+        # TODO 11: Obtenemos el ninja a eliminar a partir de su ID y procedemos a su borrado
         if ninja is None:
             send(self, 404)
         else:
-            ninja.key.delete()
             send(self, 204)
 
