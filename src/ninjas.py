@@ -89,7 +89,7 @@ class Ninjas(webapp2.RequestHandler):
             send(self, 201, ninja)
 
     def update(self, ninja_id):
-        # TODO 12: Obtenemos el ninja a modificar a partir de su ID
+        # TODO 11: Obtenemos el ninja a modificar a partir de su ID que nos llega como parametro
         if ninja is None:
             send(self, 404)
         else:
@@ -107,7 +107,7 @@ class Ninjas(webapp2.RequestHandler):
                 send(self, 200, ninja)
 
     def delete(self, ninja_id):
-        # TODO 11: Obtenemos el ninja a eliminar a partir de su ID y procedemos a su borrado
+        # TODO 12: Obtenemos el ninja a eliminar a partir de su ID y procedemos a su borrado
         if ninja is None:
             send(self, 404)
         else:
