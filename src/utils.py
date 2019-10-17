@@ -7,7 +7,7 @@
 
 import logging
 
-import ujson
+import json
 
 import datetime
 
@@ -62,12 +62,12 @@ def send(handler, code, data=None):
     handler.response.headers['Access-Control-Allow-Origin'] = '*'
     handler.response.status = code
     if data is not None:
-        handler.response.write(ujson.dumps(serialize(data)))
+        handler.response.write(json.dumps(serialize(data)))
 
 
 def read_body(handler):
     """ Reads json body """
     try:
-        return ujson.loads(handler.request.body)
+        return json.loads(handler.request.body)
     except ValueError:
         return None
