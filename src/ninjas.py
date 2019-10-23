@@ -89,7 +89,7 @@ class Ninjas(webapp2.RequestHandler):
             send(self, 201, ninja)
 
     def update(self, ninja_id):
-        # TODO: Obtenemos el ninja a modificar a partir de su ID
+        # TODO: Obtenemos el ninja a modificar a partir de su ID que nos llega como parametro
         if ninja is None:
             send(self, 404)
         else:
