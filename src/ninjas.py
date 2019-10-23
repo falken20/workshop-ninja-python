@@ -22,9 +22,9 @@ from src.utils import send, read_body
 class Ninjas(webapp2.RequestHandler):
 
     def list(self):
-        # TODO 06: Incluir traza de log indicando que has accedido al metodo
+        # TODO: Incluir traza de log indicando que has accedido al metodo
         department = self.request.get('department', default_value=None)
-        # TODO 09: Modificar para incluir el poder filtrar por departamento
+        # TODO: Modificar para incluir el poder filtrar por departamento
         if department is None:
             ninjas = model.Ninja.query().order(model.Ninja.name).fetch()
         else:
@@ -32,7 +32,7 @@ class Ninjas(webapp2.RequestHandler):
         send(self, 200, ninjas)
 
     def retrieve(self, ninja_id):
-        # TODO 10: Obtener los datos del ninja que nos llega como parametro consultando en model.Ninja
+        # TODO: Obtener los datos del ninja que nos llega como parametro consultando en model.Ninja
         # asignandolo a un objeto llamado ninja que será el que luego se use en la sentencia if
         if ninja is None:
             send(self, 404)
@@ -45,7 +45,7 @@ class Ninjas(webapp2.RequestHandler):
         ninja.name = data['name']
         ninja.email = data['email']
         ninja.department = data['department']
-        # TODO 08: Asigna el edificio introducido en el formulario
+        # TODO: Asigna el edificio introducido en el formulario
 
         # Comprobamos si ha seleccionado algún archivo
         if 'image' in data:
@@ -70,7 +70,7 @@ class Ninjas(webapp2.RequestHandler):
     def create(self):
         # Recogemos los campos introducidos por el usuario
         ninja_data = read_body(self)
-        # TODO 07: Mostrar en logs el contenido de la variable ninja_data
+        # TODO: Mostrar en logs el contenido de la variable ninja_data
         if ninja_data is None:
             send(self, 400) # Bad Request
         else:
@@ -89,7 +89,7 @@ class Ninjas(webapp2.RequestHandler):
             send(self, 201, ninja)
 
     def update(self, ninja_id):
-        # TODO 11: Obtenemos el ninja a modificar a partir de su ID que nos llega como parametro
+        # TODO: Obtenemos el ninja a modificar a partir de su ID que nos llega como parametro
         if ninja is None:
             send(self, 404)
         else:
@@ -107,7 +107,7 @@ class Ninjas(webapp2.RequestHandler):
                 send(self, 200, ninja)
 
     def delete(self, ninja_id):
-        # TODO 12: Obtenemos el ninja a eliminar a partir de su ID y procedemos a su borrado
+        # TODO: Obtenemos el ninja a eliminar a partir de su ID y procedemos a su borrado
         if ninja is None:
             send(self, 404)
         else:

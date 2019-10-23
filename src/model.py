@@ -10,7 +10,7 @@ from google.appengine.ext import ndb
 
 
 # [START ndb Ninja class]
-# TODO 04: En clase Ninja incorpora como indices los campos name y department
+# TODO: En clase Ninja incorpora como indices los campos name y department
 class Ninja(ndb.Model):
     email = ndb.StringProperty(required=True, indexed=True)
     name = ndb.StringProperty(required=True, indexed=False)
@@ -22,7 +22,7 @@ class Ninja(ndb.Model):
 
 
 # [START ndb Mooc class]
-# TODO 05: En clase Mooc incorpora como indice el campo date
+# TODO: En clase Mooc incorpora como indice el campo date
 class Mooc(ndb.Model):
     ninja_id = ndb.IntegerProperty(required=True, indexed=True)
     name = ndb.StringProperty(required=True, indexed=False)

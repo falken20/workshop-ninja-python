@@ -23,13 +23,12 @@ from google.appengine.ext.db import BadValueError
 class Moocs(webapp2.RequestHandler):
 
     def list(self):
-        # TODO 12: Obtener los moocs de un determinado ninja que podemos obtener de variable 'ninja_id' de la request
+        # TODO: Obtener los moocs de un determinado ninja que podemos obtener de variable 'ninja_id' de la request
         # Mostrar los moocs ordenados por model.Mooc.date
         send(self, 200, moocs)
 
     def retrieve(self, mooc_id):
-        # TODO 13: Recuperar un determinado mooc a partir de mooc_id
-        mooc = model.Mooc.get_by_id(int(mooc_id))
+        # TODO: En este metodo recuperamos un determinado mooc a partir de su mooc_id
         if mooc is None:
             send(self, 404)
         else:
@@ -77,13 +76,8 @@ class Moocs(webapp2.RequestHandler):
                 send(self, 201, mooc)
 
     def delete(self, mooc_id):
-        # Elimina un determinado mooc
-        mooc = model.Mooc.get_by_id(int(mooc_id))
+        # TODO: Completa el método para elimina un determinado mooc
         if mooc is None:
             send(self, 404)
         else:
-            name = mooc.name
-            mooc.key.delete()
-            logging.info('WNP: Se procede a borrar el mooc: ' + format(mooc_id) + ' - ' + name)
-            logging.info('WNP: Se procede a borrar el mooc con id %s y nombre %s', format(mooc_id), name)
             send(self, 204)

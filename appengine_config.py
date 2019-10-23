@@ -46,4 +46,4 @@ else:
 
 # Esta función sólo es llamada cuando no se asigna un namespace
 def namespace_manager_default_namespace_for_request():
-    # TODO 03: Incluir comando para que devuelva variable definida en config.py que contiene el nombre del name space
+    # TODO: Incluir comando para que devuelva variable definida en config.py que contiene el nombre del name space
