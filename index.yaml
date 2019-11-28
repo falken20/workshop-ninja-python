@@ -27,7 +27,7 @@ indexes:
 - kind: Ninja
   ancestor: no
   properties:
-  - name: department
+  - name: building
     direction: asc
-  - name: name
+  - name: date
     direction: asc
