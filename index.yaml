@@ -16,6 +16,14 @@ indexes:
   - name: date
     direction: desc
 
+- kind: Ninja
+  ancestor: no
+  properties:
+  - name: building
+    direction: asc
+  - name: date
+    direction: asc
+
 - kind: Mooc
   ancestor: no
   properties:
@@ -24,4 +32,4 @@ indexes:
   - name: date
     direction: asc
 
-# TODO: Crear nuevo indice en entidad Ninja para poder buscar por edificio y fecha de manera ascendente
+
