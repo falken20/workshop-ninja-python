@@ -5,7 +5,6 @@
 #
 # Workshop Ninja Python
 
-from builtins import str
 import logging
 import re
 

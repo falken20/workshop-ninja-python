@@ -5,7 +5,6 @@
 #
 # Workshop Ninja Python
 
-from builtins import range
 import webapp2
 import logging
 from itertools import groupby
@@ -53,7 +52,7 @@ class Ranking(webapp2.RequestHandler):
         #ranking = sorted(ranking, key=lambda n: - n['points'])
 
         # Recuperar información de cada usuario
-        ninjas = ndb.get_multi([ndb.Key(model.Ninja, id) for id in [x['ninja_id'] for x in ranking]])
+        ninjas = ndb.get_multi([ndb.Key(model.Ninja, id) for id in map(lambda x: x['ninja_id'], ranking)])
         for i in range(len(ranking)):
             self.ninja_info(ranking[i], ninjas[i])
 

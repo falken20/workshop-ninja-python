@@ -5,7 +5,6 @@
 #
 # Workshop Ninja Python
 
-from __future__ import absolute_import
 import logging
 import base64
 import datetime
@@ -15,7 +14,7 @@ from werkzeug.utils import secure_filename
 from werkzeug.exceptions import BadRequest
 
 
-from . import config
+import config
 
 
 def _get_storage_client():
